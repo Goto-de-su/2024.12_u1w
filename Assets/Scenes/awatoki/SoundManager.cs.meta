@@ -1,2 +1,22 @@
 fileFormatVersion: 2
 guid: 7e866023a58da2b4394407fecccf1988
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - bgmInTitle: {fileID: 8300000, guid: 7d441cb4215001544a8150c529f72b48, type: 3}
+  - bgmInGame: {instanceID: 0}
+  - bgmInEndRoll: {instanceID: 0}
+  - meGameClear: {instanceID: 0}
+  - meGameOver: {instanceID: 0}
+  - seShoot: {instanceID: 0}
+  - seItemGet: {instanceID: 0}
+  - seDamage: {instanceID: 0}
+  - seButton: {instanceID: 0}
+  - sePlayerFootsteps: {instanceID: 0}
+  - sePlayerFall: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

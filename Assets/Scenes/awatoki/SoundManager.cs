@@ -65,6 +65,12 @@ public class SoundManager : MonoBehaviour
         seAudioSource = gameObject.AddComponent<AudioSource>();
     }
 
+    private void Start()
+    {
+        // ゲーム開始時にタイトルBGMを再生
+        PlayTitleBGM();
+    }
+
     public void PlayTitleBGM()
     {
         PlayBGM(BGMType.Title);

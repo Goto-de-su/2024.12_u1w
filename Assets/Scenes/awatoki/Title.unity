@@ -729,7 +729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmVolume: 1
   seVolume: 1
-  bgmInTitle: {fileID: 0}
+  bgmInTitle: {fileID: 8300000, guid: 7d441cb4215001544a8150c529f72b48, type: 3}
   bgmInGame: {fileID: 0}
   bgmInEndRoll: {fileID: 0}
   meGameClear: {fileID: 0}
