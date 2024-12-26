@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 781139032a647f344bb1c1614ea14d9a
+guid: 3bb9cfdae08487b46bbfb1f92c1901af
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8064459344423018409
-    second: CreditsCat_16to9_0
+      213: 9132007438767976228
+    second: ishi_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CreditsCat_16to9_0
+      name: ishi_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 640
-        height: 360
+        x: 12
+        y: 13
+        width: 234
+        height: 228
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9afd9e1eb07baef60800000000000000
-      internalID: 8064459344423018409
+      spriteID: 42f6df1d1686bbe70800000000000000
+      internalID: 9132007438767976228
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      CreditsCat_16to9_0: 8064459344423018409
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
