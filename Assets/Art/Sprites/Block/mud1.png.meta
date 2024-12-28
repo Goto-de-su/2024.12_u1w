@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 781139032a647f344bb1c1614ea14d9a
+guid: d3090bf1fd0cc9b44aee1ac2b2d9cbb8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8064459344423018409
-    second: CreditsCat_16to9_0
+      213: -7190143957230999824
+    second: mud1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 200
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CreditsCat_16to9_0
+      name: mud1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 640
-        height: 360
+        x: 25
+        y: 2
+        width: 209
+        height: 238
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9afd9e1eb07baef60800000000000000
-      internalID: 8064459344423018409
+      spriteID: 0f623597a2a773c90800000000000000
+      internalID: -7190143957230999824
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      CreditsCat_16to9_0: 8064459344423018409
+      mud1_0: -7190143957230999824
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
