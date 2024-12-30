@@ -62,7 +62,7 @@ public class InputSettings
 
     public bool IsSkillPressed()
     {
-        return Input.GetKey(skillKey);
+        return Input.GetKeyDown(skillKey);
     }
 
     public bool IsSkillReleased()

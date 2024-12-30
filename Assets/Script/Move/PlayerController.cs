@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerJump jump;
     [SerializeField] private InputSettings inputSettings;
-    [SerializeField] private ISkill skill;
+    [SerializeField] private LightController light;
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -70,17 +70,17 @@ public class PlayerController : MonoBehaviour
         if (inputSettings.IsSkillPressed() && !isSkillActive)
         {
             isSkillActive = true;
-            if (skill != null)
+            if (light != null)
             {
-                skill.SetLightUpStartTime();
+                light.SetLightUpStartTime();
             }
         }
         else if (inputSettings.IsSkillReleased() && isSkillActive)
         {
             isSkillActive = false;
-            if (skill != null)
+            if (light != null)
             {
-                skill.SetLightUpEndTime();
+                light.SetLightUpEndTime();
             }
         }
     }
