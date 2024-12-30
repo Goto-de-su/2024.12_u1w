@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e6840897144a9be4fa2a0ef87f399125
+guid: 54d8211940be863489777e782eab73a1
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -49,10 +49,10 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
+  alignment: 7
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 500
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
@@ -108,8 +108,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 214
-        height: 442
+        width: 438
+        height: 453
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,9 +128,9 @@ TextureImporter:
       name: dead_06_1
       rect:
         serializedVersion: 2
-        x: 174
-        y: 36
-        width: 62
+        x: 256
+        y: 2
+        width: 63
         height: 93
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -150,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
