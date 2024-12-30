@@ -5,28 +5,31 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private JumpParameters parameters;
 
     private Rigidbody2D rb;
+    private float airTimer;
+    private Vector2 jumpStartVelocity;
+    private bool isInAir;
+    private bool isJumping;
     private float jumpStartTime;
     private float jumpHoldTime;
-    private bool isJumping;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = parameters.gravityScale;
     }
 
-    public void StartJump()
+    public void StartJump(Vector2 currentVelocity)
     {
         if (rb.IsTouchingLayers())
         {
             isJumping = true;
+            isInAir = true;
+            airTimer = 0f;
             jumpStartTime = Time.time;
             jumpHoldTime = 0f;
+            jumpStartVelocity = currentVelocity;
 
-            // 初速度を設定
-            Vector2 velocity = rb.linearVelocity;
-            velocity.y = parameters.initialJumpSpeed;
-            rb.linearVelocity = velocity;
+            Vector2 jumpVelocity = new Vector2(jumpStartVelocity.x, parameters.initialJumpSpeed);
+            rb.linearVelocity = jumpVelocity;
         }
     }
 
@@ -36,9 +39,8 @@ public class PlayerJump : MonoBehaviour
 
         if (isJumpHeld)
         {
-            jumpHoldTime += Time.deltaTime * 60f; // フレーム数に変換
+            jumpHoldTime += Time.deltaTime * 60f;
 
-            // 最大ホールド時間を超えた場合
             if (jumpHoldTime >= parameters.maxJumpHoldFrames)
             {
                 isJumping = false;
@@ -46,24 +48,42 @@ public class PlayerJump : MonoBehaviour
         }
         else
         {
-            // ボタンを離した場合
             isJumping = false;
         }
 
-        // ジャンプの高さを調整
-        float jumpHeightRatio = Mathf.Clamp01((jumpHoldTime - parameters.minJumpHoldFrames) /
-            (parameters.maxJumpHoldFrames - parameters.minJumpHoldFrames));
-        float targetHeight = Mathf.Lerp(parameters.minJumpHeight, parameters.maxJumpHeight, jumpHeightRatio);
+        float jumpHeightRatio = Mathf.Clamp01(
+            (jumpHoldTime - parameters.minJumpHoldFrames) /
+            (parameters.maxJumpHoldFrames - parameters.minJumpHoldFrames)
+        );
+
+        float targetHeight = Mathf.Lerp(
+            parameters.minJumpHeight,
+            parameters.maxJumpHeight,
+            jumpHeightRatio
+        );
 
         AdjustJumpHeight(targetHeight);
+
+        if (isInAir)
+        {
+            airTimer += Time.deltaTime;
+
+            if (rb.IsTouchingLayers())
+            {
+                isInAir = false;
+                Debug.Log($"Air Time without input: {airTimer:F2} seconds");
+            }
+        }
     }
 
     public void HandleAirControl(float inputDirection)
     {
-        // 空中での水平移動
-        Vector2 velocity = rb.linearVelocity;
-        velocity.x = parameters.airControlSpeed * inputDirection;
-        rb.linearVelocity = velocity;
+        if (!rb.IsTouchingLayers())
+        {
+            Vector2 airVelocity = rb.linearVelocity;
+            airVelocity.x = parameters.airControlSpeed * inputDirection;
+            rb.linearVelocity = airVelocity;
+        }
     }
 
     private void AdjustJumpHeight(float targetHeight)

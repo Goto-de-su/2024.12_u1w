@@ -5,10 +5,10 @@ public class JumpParameters
 {
     [Header("Jump Heights")]
     [Tooltip("Maximum jump height in pixels")]
-    public float maxJumpHeight = 300f;
+    public float maxJumpHeight = 15f;
 
     [Tooltip("Minimum jump height in pixels")]
-    public float minJumpHeight = 100f;
+    public float minJumpHeight = 10f;
 
     [Header("Jump Timing")]
     [Tooltip("Frames needed for minimum jump height")]
@@ -19,7 +19,7 @@ public class JumpParameters
 
     [Header("Air Control")]
     [Tooltip("Horizontal movement speed in air (pixels per second)")]
-    public float airControlSpeed = 150f;
+    public float airControlSpeed = 2f;
 
     [Header("Physics Settings")]
     [Tooltip("Initial vertical speed for jump (pixels per second)")]
