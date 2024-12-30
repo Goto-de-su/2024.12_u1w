@@ -59,7 +59,7 @@ Shader "Custom/SoftMaskShader"
                 float dist = distance(uv, _Center.xy);
 
                 // 円形マスクを作成
-                float alpha = smoothstep(_Radius + _Softness, _Radius, dist);
+                float alpha = smoothstep(_Radius, -_Softness + _Radius, dist);
 
                 // マスク部分の色を設定
                 fixed4 color = lerp(_MaskColor, tex2D(_MainTex, uv), alpha);
