@@ -15,8 +15,12 @@ public class LightController : MonoBehaviour
 
     private bool isZooming = false;
     private float currentRadius;
-    private float maxRadius = 0.6f;
+    private float maxRadius = 0.7f;
     private bool canExpand;
+
+    private float lightUpStartTime;
+    private float lightUpEndTime;
+    private float lightUpTimeCount;
 
     void Start()
     {
@@ -27,11 +31,15 @@ public class LightController : MonoBehaviour
 
     void Update()
     {
-        // デバック用
+        /* // デバック用
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            LightUp();
+            SetLightUpStartTime();
         }
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            SetLightUpEndTime();
+        } */
         if (isZooming)
         {
             ZoomLight();
@@ -41,7 +49,7 @@ public class LightController : MonoBehaviour
     /// <summary>
     /// 全体を照らす
     /// </summary>
-    public void LightUp()
+    private void LightUp()
     {
         // ズーム中でなく、拡大可能でストックがあるなら
         if (!isZooming && canExpand && lightStock.currentStock > 0)
@@ -70,7 +78,12 @@ public class LightController : MonoBehaviour
             maskMaterial.SetFloat("_Radius", currentRadius);
             isZooming = false;
             canExpand = !canExpand;
-            if (!canExpand) Invoke(nameof(RevertLight), lightUpTime);
+            
+            if (canExpand)
+            {
+                lightUpStartTime = 0;
+                lightUpEndTime = 0;
+            }
         }
     }
 
@@ -79,7 +92,33 @@ public class LightController : MonoBehaviour
     /// </summary>
     private void RevertLight()
     {
-        isZooming = true;
-        zoomSpeed = -zoomSpeed;
+        if (!isZooming && !canExpand)
+        {
+            isZooming = true;
+            zoomSpeed = -zoomSpeed;
+        }
+    }
+
+    public void SetLightUpStartTime()
+    {
+        if (Time.time > lightUpEndTime && lightUpStartTime != 0) return;
+        lightUpStartTime = Time.time;
+        LightUp();
+        
+    }
+
+    public void SetLightUpEndTime()
+    {
+        lightUpEndTime = Time.time;
+        lightUpTimeCount = lightUpEndTime - lightUpStartTime;
+
+        if (lightUpTimeCount > lightUpTime)
+        {
+            RevertLight();
+        }
+        else
+        {
+            Invoke(nameof(RevertLight), lightUpTime - lightUpTimeCount);
+        }
     }
 }
