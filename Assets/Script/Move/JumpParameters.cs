@@ -10,21 +10,22 @@ public class JumpParameters
     [Tooltip("Minimum jump height in pixels")]
     public float minJumpHeight = 10f;
 
-    [Header("Jump Timing")]
-    [Tooltip("Frames needed for minimum jump height")]
+    [Header("Jump Force")]
+    [Tooltip("Jump force multiplier relative to gravity (1 means same as fall speed)")]
+    [Range(0.1f, 2.0f)]
+    public float jumpForceMultiplier = 1.0f;
+
+    [Header("Jump Timing (Based on 60 FPS)")]
+    [Tooltip("Number of frames to hold for minimum jump height (at 60 FPS)")]
+    [Range(1, 30)]
     public int minJumpHoldFrames = 5;
 
-    [Tooltip("Frames needed for maximum jump height")]
+    [Tooltip("Number of frames to hold for maximum jump height (at 60 FPS)")]
+    [Range(1, 60)]
     public int maxJumpHoldFrames = 20;
 
     [Header("Air Control")]
-    [Tooltip("Horizontal movement speed in air (pixels per second)")]
-    public float airControlSpeed = 2f;
-
-    [Header("Physics Settings")]
-    [Tooltip("Initial vertical speed for jump (pixels per second)")]
-    public float initialJumpSpeed = 500f;
-
-    [Tooltip("Gravity scale for falling")]
-    public float gravityScale = 2f;
+    [Tooltip("Air control speed in pixels per second")]
+    [Range(0f, 5f)]
+    public float airControlSpeed = 1f;
 }

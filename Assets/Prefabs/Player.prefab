@@ -183,6 +183,7 @@ MonoBehaviour:
     primaryDashKey: 304
     alternativeDashKey: 306
     skillKey: 101
+  light: {fileID: 0}
 --- !u!114 &6528048854061376701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,11 +212,11 @@ MonoBehaviour:
   parameters:
     maxJumpHeight: 10
     minJumpHeight: 5
+    jumpForceMultiplier: 1
     minJumpHoldFrames: 3
     maxJumpHoldFrames: 5
-    airControlSpeed: 3
-    initialJumpSpeed: 15
-    gravityScale: 2
+    airControlSpeed: 0.1
+  rb: {fileID: 2039100011004578627}
 --- !u!114 &4860452565672926863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,10 +231,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialWalkSpeed: 5
   maxWalkSpeed: 10
+  runSpeed: 15
   accelerationFrames: 10
   decelerationFrames: 8
-  dashSpeed: 50
-  dashDuration: 0.3
-  dashCooldown: 1
-  dashStopDecelerationTime: 0.2
-  dashStopDecelerationRate: 0.8

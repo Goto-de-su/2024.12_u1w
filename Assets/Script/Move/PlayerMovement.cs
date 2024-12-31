@@ -8,9 +8,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 currentVelocity;
     private float inertiaVelocity;
     private float previousInputDirection;
-    private bool isDashStopping;
-    private float currentStopTime;
-    private float initialStopVelocity;
 
     public MovementParameters Parameters => parameters;
 
@@ -22,41 +19,30 @@ public class PlayerMovement : MonoBehaviour
 
     private void ResetMovementState()
     {
-        isDashStopping = false;
-        currentStopTime = 0f;
         inertiaVelocity = 0f;
         previousInputDirection = 0f;
         currentVelocity = Vector2.zero;
     }
 
-    public void UpdateMovement(float inputDirection, bool isDashing)
+    public void UpdateMovement(float inputDirection, bool isRunning)
     {
         if (Mathf.Sign(inputDirection) != Mathf.Sign(previousInputDirection) && inputDirection != 0)
         {
-            isDashStopping = false;
-            currentStopTime = 0f;
+            inertiaVelocity = 0f;
         }
 
-        bool shouldInitiateDashStop = isDashing &&
-                                    !isDashStopping &&
-                                    previousInputDirection != 0 &&
-                                    inputDirection == -previousInputDirection;
-
-        if (shouldInitiateDashStop)
+        if (inputDirection == 0)
         {
-            InitiateDashStop();
-        }
-
-        if (isDashStopping)
-        {
-            UpdateDashStop();
+            ApplyDeceleration();
         }
         else
         {
-            UpdateNormalMovement(inputDirection, isDashing);
+            UpdateMovementWithInput(inputDirection, isRunning);
         }
-
+        //前の入力を保存
         previousInputDirection = inputDirection;
+        //現在の速度を更新
+        currentVelocity = rb.linearVelocity;
     }
 
     private bool IsWallInDirection(float direction)
@@ -68,64 +54,21 @@ public class PlayerMovement : MonoBehaviour
         if (contactCount == 0) return false;
 
         Vector2 contactNormal = contacts[0].normal;
-
-        Debug.Log($"Wall Check - Direction: {direction}, Contact Normal: {contactNormal}, Position: {transform.position}, Contact Point: {contacts[0].point}");
-
         return (direction > 0 && contactNormal.x < -0.5f) || (direction < 0 && contactNormal.x > 0.5f);
     }
 
-    private void InitiateDashStop()
+    private void UpdateMovementWithInput(float inputDirection, bool isRunning)
     {
-        isDashStopping = true;
-        currentStopTime = 0f;
-        initialStopVelocity = rb.linearVelocity.x;
-    }
-
-    private void UpdateDashStop()
-    {
-        currentStopTime += Time.deltaTime;
-        float stopProgress = currentStopTime / parameters.dashStopDecelerationTime;
-
-        if (stopProgress >= 1f)
+        if (IsWallInDirection(inputDirection))
         {
-            isDashStopping = false;
             currentVelocity = new Vector2(0f, rb.linearVelocity.y);
             rb.linearVelocity = currentVelocity;
             return;
         }
 
-        float decelerationMultiplier = Mathf.Pow(1f - parameters.dashStopDecelerationRate, stopProgress);
-        float currentSpeed = initialStopVelocity * decelerationMultiplier;
-        currentVelocity = new Vector2(currentSpeed, rb.linearVelocity.y);
-        rb.linearVelocity = currentVelocity;
-    }
-
-    private void UpdateNormalMovement(float inputDirection, bool isDashing)
-    {
-        Debug.Log($"Movement Update - Input: {inputDirection}, IsDashing: {isDashing}, Velocity: {rb.linearVelocity}");
-
-        if (inputDirection == 0)
-        {
-            ApplyDeceleration();
-            return;
-        }
-
-        if (!isDashing && IsWallInDirection(inputDirection))
-        {
-            Debug.Log("Wall detected, stopping movement");
-            currentVelocity = new Vector2(0f, rb.linearVelocity.y);
-            rb.linearVelocity = currentVelocity;
-            return;
-        }
-
-        float targetSpeed = isDashing ? parameters.dashSpeed : parameters.maxWalkSpeed;
+        float targetSpeed = isRunning ? parameters.runSpeed : parameters.maxWalkSpeed;
         targetSpeed *= inputDirection;
 
-        ApplyAcceleration(targetSpeed);
-    }
-
-    private void ApplyAcceleration(float targetSpeed)
-    {
         float speedDifference = targetSpeed - inertiaVelocity;
         float acceleration = speedDifference / parameters.accelerationFrames;
         inertiaVelocity += acceleration;

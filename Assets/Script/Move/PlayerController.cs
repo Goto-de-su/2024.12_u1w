@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerJump jump;
     [SerializeField] private InputSettings inputSettings;
-    [SerializeField] private LightController light;
+    [SerializeField] private new LightController light;
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -13,9 +13,7 @@ public class PlayerController : MonoBehaviour
     private float horizontalInput;
     private bool jumpInput;
     private bool jumpHeld;
-    private bool isDashing;
     private bool isSkillActive;
-    private float dashCooldownTimer;
 
     private void Awake()
     {
@@ -29,53 +27,66 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleInput();
-        UpdateDashCooldown();
         UpdateSprite();
     }
 
     private void FixedUpdate()
     {
-        movement.UpdateMovement(horizontalInput, isDashing);
+        bool isRunning = inputSettings.IsRunning();
+        bool isGrounded = rb.IsTouchingLayers();
+
+        if (isGrounded)
+        {
+            movement.UpdateMovement(horizontalInput, isRunning);
+        }
+        else
+        {
+            jump.HandleAirControl(horizontalInput);
+        }
+
         jump.UpdateJump(jumpHeld);
 
         if (jumpInput)
         {
-            jump.StartJump(movement.GetCurrentVelocity());
+            jump.StartJump(movement.GetCurrentVelocity(), isRunning);
             jumpInput = false;
-        }
-
-        if (!rb.IsTouchingLayers())
-        {
-            jump.HandleAirControl(horizontalInput);
         }
     }
 
     private void HandleInput()
     {
-        float leftInput = inputSettings.IsLeftPressed() ? -1 : 0;
-        float rightInput = inputSettings.IsRightPressed() ? 1 : 0;
-        horizontalInput = leftInput + rightInput;
-
-        if (inputSettings.IsJumpPressed())
+        if (!isSkillActive)
         {
-            jumpInput = true;
-        }
-        jumpHeld = inputSettings.IsJumpPressed();
+            float leftInput = inputSettings.IsLeftPressed() ? -1 : 0;
+            float rightInput = inputSettings.IsRightPressed() ? 1 : 0;
+            horizontalInput = leftInput + rightInput;
 
-        if (inputSettings.IsDashTriggered() && dashCooldownTimer <= 0)
-        {
-            StartDash();
-        }
-
-        if (inputSettings.IsSkillPressed() && !isSkillActive)
-        {
-            isSkillActive = true;
-            if (light != null)
+            if (inputSettings.IsJumpTriggered())
             {
-                light.SetLightUpStartTime();
+                jumpInput = true;
+            }
+            jumpHeld = inputSettings.IsJumpPressed();
+
+            Vector2 currentVelocity = movement.GetCurrentVelocity();
+            bool isStationary = Mathf.Abs(currentVelocity.x) < 0.1f && Mathf.Abs(currentVelocity.y) < 0.1f;
+
+            if (inputSettings.IsSkillPressed() && isStationary)
+            {
+                isSkillActive = true;
+                if (light != null)
+                {
+                    light.SetLightUpStartTime();
+                }
             }
         }
-        else if (inputSettings.IsSkillReleased() && isSkillActive)
+        else
+        {
+            horizontalInput = 0;
+            jumpInput = false;
+            jumpHeld = false;
+        }
+
+        if (inputSettings.IsSkillReleased() && isSkillActive)
         {
             isSkillActive = false;
             if (light != null)
@@ -85,32 +96,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void StartDash()
-    {
-        isDashing = true;
-        dashCooldownTimer = movement.Parameters.dashCooldown;
-        Invoke(nameof(EndDash), movement.Parameters.dashDuration);
-    }
-
-    private void EndDash()
-    {
-        isDashing = false;
-    }
-
-    private void UpdateDashCooldown()
-    {
-        if (dashCooldownTimer > 0)
-        {
-            dashCooldownTimer -= Time.deltaTime;
-        }
-    }
-
     private void UpdateSprite()
     {
-        Vector2 velocity = movement.GetCurrentVelocity();
-        if (Mathf.Abs(velocity.x) > 0.1f)
+        // ínè„Ç…Ç¢ÇÈéûÇÃÇ›å¸Ç´ÇïœçX
+        if (rb.IsTouchingLayers())
         {
-            spriteRenderer.flipX = velocity.x < 0;
+            Vector2 velocity = movement.GetCurrentVelocity();
+            if (Mathf.Abs(velocity.x) > 0.1f)
+            {
+                spriteRenderer.flipX = velocity.x < 0;
+            }
         }
     }
 }
