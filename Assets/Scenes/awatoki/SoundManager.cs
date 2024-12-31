@@ -19,20 +19,12 @@ public enum SEType
     Button,
     PlayerFootsteps,
     PlayerFall,
+    EnemyMove,
+    EnemySleep,
 }
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager instance;
-
-    private AudioSource bgmAudioSource;
-    private AudioSource seAudioSource;
-
-    [SerializeField] private float bgmVolume = 1.0f;
-    [SerializeField] private float seVolume = 1.0f;
-
-    private BGMType playingBGM = BGMType.None;
-
     public AudioClip bgmInTitle;
     public AudioClip bgmInGame;
     public AudioClip bgmInEndRoll;
@@ -44,6 +36,16 @@ public class SoundManager : MonoBehaviour
     public AudioClip seButton;
     public AudioClip sePlayerFootsteps;
     public AudioClip sePlayerFall;
+    public AudioClip seEnemyMove;
+    public AudioClip seEnemySleep;
+
+    private AudioSource bgmAudioSource;
+    private AudioSource seAudioSource;
+
+    [SerializeField] private float bgmVolume = 1.0f;
+    [SerializeField] private float seVolume = 1.0f;
+    public static SoundManager instance;
+    private BGMType playingBGM = BGMType.None;
 
     private void Awake()
     {
@@ -152,13 +154,30 @@ public class SoundManager : MonoBehaviour
             case SEType.PlayerFall:
                 seClip = sePlayerFall;
                 break;
+            case SEType.EnemyMove:
+                seClip = seEnemyMove;
+                break;
+            case SEType.EnemySleep:
+                seClip = seEnemySleep;
+                break;
         }
 
-        seAudioSource.clip = seClip;
-        seAudioSource.volume = seVolume;
-        seAudioSource.Play();
+        if (seClip == null)
+        {
+            Debug.LogWarning($"SE Clip is null for SEType: {type}");
+            return;
+        }
 
-        Debug.Log($"Playing SE: {type}, Volume: {seVolume}");
+        // SEがすでに再生中でない場合に再生
+        if (!seAudioSource.isPlaying)
+        {
+            seAudioSource.PlayOneShot(seClip, seVolume);
+            Debug.Log($"Playing SE: {type}, Clip Name: {seClip.name}, Volume: {seVolume}");
+        }
+        else
+        {
+            Debug.Log($"AudioSource is already playing: {seAudioSource.clip.name}");
+        }
     }
 
     public void SetBGMVolume(float volume)

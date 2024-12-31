@@ -727,19 +727,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e866023a58da2b4394407fecccf1988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmVolume: 1
-  seVolume: 1
-  bgmInTitle: {fileID: 8300000, guid: 7d441cb4215001544a8150c529f72b48, type: 3}
-  bgmInGame: {fileID: 0}
+  bgmInTitle: {fileID: 8300000, guid: 26af55b40a89f3b4ea3b482c8fcb072f, type: 3}
+  bgmInGame: {fileID: 8300000, guid: e781706fa451f324d9e461a8402403ee, type: 3}
   bgmInEndRoll: {fileID: 0}
   meGameClear: {fileID: 0}
-  meGameOver: {fileID: 0}
+  meGameOver: {fileID: 8300000, guid: 909b67a6f1c262a4984f2af0beb65746, type: 3}
   seShoot: {fileID: 0}
   seItemGet: {fileID: 0}
   seDamage: {fileID: 0}
   seButton: {fileID: 0}
   sePlayerFootsteps: {fileID: 0}
   sePlayerFall: {fileID: 0}
+  seEnemyMove: {fileID: 8300000, guid: 28413844a7019f246b08d2eae69102f2, type: 3}
+  seEnemySleep: {fileID: 8300000, guid: 33709cd4cd6326c49b83b257a6542aeb, type: 3}
+  bgmVolume: 1
+  seVolume: 1
 --- !u!4 &902062504
 Transform:
   m_ObjectHideFlags: 0
@@ -805,7 +807,7 @@ MonoBehaviour:
   exitButton: {fileID: 1425532157}
   titleBackButton: {fileID: 0}
   titleSceneName: Title
-  gameSceneName: SampleScene
+  gameSceneName: TestEnemy
   optionSceneName: Option
   creditsSceneName: Credits
 --- !u!1 &1425532155
