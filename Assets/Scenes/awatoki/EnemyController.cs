@@ -26,6 +26,10 @@ public class EnemyController : MonoBehaviour
     string nowAnime = "";
     string oldAnime = "";
 
+    // Coroutineを管理するための参照
+    private Coroutine enemySleepCoroutine;
+    private Coroutine enemyMoveCoroutine;
+
     void Start()
     {
         // アニメーターをとってくる
@@ -66,11 +70,6 @@ public class EnemyController : MonoBehaviour
                 oldAnime = nowAnime;
             }
 
-            // 効果音の再生
-            {
-                SoundManager.instance.PlaySE(SEType.EnemyMove);
-            }
-
             // プレイヤーとの距離をチェックして追いかける
             float dist = Vector2.Distance(transform.position, player.transform.position);
             if (dist <= chaseRange) // プレイヤーとの距離が追跡範囲内であれば
@@ -102,6 +101,12 @@ public class EnemyController : MonoBehaviour
                     transform.localScale = new Vector2(1, 1); // 向きの変更
                 }
             }
+
+            // EnemyMove音の管理（5秒に1回繰り返し再生）
+            if (enemyMoveCoroutine == null)
+            {
+                enemyMoveCoroutine = StartCoroutine(PlayEnemyMoveSound());
+            }
         }
         else
         {
@@ -111,9 +116,11 @@ public class EnemyController : MonoBehaviour
             {
                 isActive = true;
             }
-            else
+
+            // EnemySleep音の管理（12秒に1回繰り返し再生）
+            if (enemySleepCoroutine == null)
             {
-                SoundManager.instance.PlaySE(SEType.EnemySleep);
+                enemySleepCoroutine = StartCoroutine(PlayEnemySleepSound());
             }
         }
     }
@@ -192,6 +199,30 @@ public class EnemyController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private IEnumerator PlayEnemyMoveSound()
+    {
+        while (!isDead && isActive)
+        {
+            SoundManager.instance.PlaySE(SEType.EnemyMove);
+            yield return new WaitForSeconds(5f);
+        }
+
+        // Coroutineが終了したときは参照をリセット
+        enemyMoveCoroutine = null;
+    }
+
+    private IEnumerator PlayEnemySleepSound()
+    {
+        while (!isDead && !isActive)
+        {
+            SoundManager.instance.PlaySE(SEType.EnemySleep);
+            yield return new WaitForSeconds(12f);
+        }
+
+        // Coroutineが終了したときは参照をリセット
+        enemySleepCoroutine = null;
     }
 
     // 指定された色に基づいてアニメーション名を設定

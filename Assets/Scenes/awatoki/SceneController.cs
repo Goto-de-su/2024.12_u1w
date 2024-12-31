@@ -38,6 +38,9 @@ public class SceneController : MonoBehaviour
 
         // シーンがロードされた後に呼ばれるイベントを登録
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // ゲーム開始時にタイトルBGMを再生
+        SoundManager.instance.PlayTitleBGM();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -48,6 +51,13 @@ public class SceneController : MonoBehaviour
             if (SoundManager.instance != null)
             {
                 SoundManager.instance.PlayTitleBGM();
+            }
+        }
+        if (scene.name == gameSceneName)
+        {
+            if (SoundManager.instance != null)
+            {
+                SoundManager.instance.PlayInGameBGM();
             }
         }
     }

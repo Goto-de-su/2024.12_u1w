@@ -729,16 +729,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmInTitle: {fileID: 8300000, guid: 26af55b40a89f3b4ea3b482c8fcb072f, type: 3}
   bgmInGame: {fileID: 8300000, guid: e781706fa451f324d9e461a8402403ee, type: 3}
-  bgmInEndRoll: {fileID: 0}
-  meGameClear: {fileID: 0}
+  bgmInEndRoll: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
+  meGameClear: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
   meGameOver: {fileID: 8300000, guid: 909b67a6f1c262a4984f2af0beb65746, type: 3}
-  seShoot: {fileID: 0}
-  seItemGet: {fileID: 0}
-  seDamage: {fileID: 0}
-  seButton: {fileID: 0}
-  sePlayerFootsteps: {fileID: 0}
-  sePlayerFall: {fileID: 0}
-  seEnemyMove: {fileID: 8300000, guid: 28413844a7019f246b08d2eae69102f2, type: 3}
+  seShoot: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
+  seItemGet: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
+  seDamage: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
+  seButton: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
+  sePlayerFootsteps: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
+  sePlayerFall: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
+  seEnemyMove: {fileID: 8300000, guid: 781ebee7c52c7fa4fadc22bfd861137a, type: 3}
   seEnemySleep: {fileID: 8300000, guid: 33709cd4cd6326c49b83b257a6542aeb, type: 3}
   bgmVolume: 1
   seVolume: 1
