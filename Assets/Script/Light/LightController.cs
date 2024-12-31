@@ -6,6 +6,8 @@ public class LightController : MonoBehaviour
     private Material maskMaterial;
     [SerializeField, Tooltip("初期半径")]
     private float defaultRadius = 0.03f;
+    [SerializeField, Tooltip("最大半径")]
+    private float maxRadius = 1.5f;
     [SerializeField, Tooltip("光が拡大縮小する速さ")]
     private float zoomSpeed = 1;
     [SerializeField, Tooltip("光が全体を照らしている時間")]
@@ -15,7 +17,6 @@ public class LightController : MonoBehaviour
 
     private bool isZooming = false;
     private float currentRadius;
-    private float maxRadius = 0.7f;
     private bool canExpand;
 
     private float lightUpStartTime;
@@ -31,15 +32,6 @@ public class LightController : MonoBehaviour
 
     void Update()
     {
-        /* // デバック用
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SetLightUpStartTime();
-        }
-        else if (Input.GetKeyUp(KeyCode.Space))
-        {
-            SetLightUpEndTime();
-        } */
         if (isZooming)
         {
             ZoomLight();
