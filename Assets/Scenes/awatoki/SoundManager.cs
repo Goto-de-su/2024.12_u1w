@@ -19,20 +19,12 @@ public enum SEType
     Button,
     PlayerFootsteps,
     PlayerFall,
+    EnemyMove,
+    EnemySleep,
 }
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager instance;
-
-    private AudioSource bgmAudioSource;
-    private AudioSource seAudioSource;
-
-    [SerializeField] private float bgmVolume = 1.0f;
-    [SerializeField] private float seVolume = 1.0f;
-
-    private BGMType playingBGM = BGMType.None;
-
     public AudioClip bgmInTitle;
     public AudioClip bgmInGame;
     public AudioClip bgmInEndRoll;
@@ -44,6 +36,17 @@ public class SoundManager : MonoBehaviour
     public AudioClip seButton;
     public AudioClip sePlayerFootsteps;
     public AudioClip sePlayerFall;
+    public AudioClip seEnemyMove;
+    public AudioClip seEnemySleep;
+
+    private AudioSource bgmAudioSource;
+    private List<AudioSource> seAudioSources = new List<AudioSource>();
+    private int sePoolSize = 3; // プールの最大数
+
+    [SerializeField] private float bgmVolume = 1.0f;
+    [SerializeField] private float seVolume = 1.0f;
+    public static SoundManager instance;
+    private BGMType playingBGM = BGMType.None;
 
     private void Awake()
     {
@@ -62,13 +65,16 @@ public class SoundManager : MonoBehaviour
         bgmAudioSource = gameObject.AddComponent<AudioSource>();
         bgmAudioSource.loop = true;
 
-        seAudioSource = gameObject.AddComponent<AudioSource>();
+        // SE用のAudioSourceをプールのサイズに合わせて生成
+        for (int i = 0; i < sePoolSize; i++)
+        {
+            AudioSource seSource = gameObject.AddComponent<AudioSource>();
+            seAudioSources.Add(seSource);
+        }
     }
 
     private void Start()
     {
-        // ゲーム開始時にタイトルBGMを再生
-        PlayTitleBGM();
     }
 
     public void PlayTitleBGM()
@@ -152,13 +158,62 @@ public class SoundManager : MonoBehaviour
             case SEType.PlayerFall:
                 seClip = sePlayerFall;
                 break;
+            case SEType.EnemyMove:
+                seClip = seEnemyMove;
+                break;
+            case SEType.EnemySleep:
+                seClip = seEnemySleep;
+                break;
         }
 
-        seAudioSource.clip = seClip;
-        seAudioSource.volume = seVolume;
-        seAudioSource.Play();
+        if (seClip == null)
+        {
+            Debug.LogWarning($"SE Clip is null for SEType: {type}");
+            return;
+        }
 
-        Debug.Log($"Playing SE: {type}, Volume: {seVolume}");
+        // 空いているAudioSourceを見つける
+        AudioSource availableSource = GetAvailableAudioSource();
+
+        if (availableSource != null)
+        {
+            availableSource.PlayOneShot(seClip, seVolume);
+            Debug.Log($"Playing SE: {type}, Clip Name: {seClip.name}, Volume: {seVolume}");
+        }
+        else
+        {
+            // すべてのSE AudioSourceが再生中なら最も古いものを停止して再生
+            AudioSource oldestSource = seAudioSources[0];
+            for (int i = 1; i < seAudioSources.Count; i++)
+            {
+                if (!seAudioSources[i].isPlaying)
+                {
+                    oldestSource = seAudioSources[i];
+                    break;
+                }
+                else if (seAudioSources[i].time < oldestSource.time)
+                {
+                    oldestSource = seAudioSources[i];
+                }
+            }
+
+            // 最も古いAudioSourceを停止して新しいSEを再生
+            oldestSource.Stop();
+            oldestSource.PlayOneShot(seClip, seVolume);
+            Debug.Log($"Stopped oldest SE and playing new SE: {seClip.name}, Volume: {seVolume}");
+        }
+    }
+
+    private AudioSource GetAvailableAudioSource()
+    {
+        foreach (var source in seAudioSources)
+        {
+            if (!source.isPlaying)
+            {
+                return source;
+            }
+        }
+        return null;
     }
 
     public void SetBGMVolume(float volume)
@@ -171,7 +226,10 @@ public class SoundManager : MonoBehaviour
     public void SetSEVolume(float volume)
     {
         seVolume = Mathf.Clamp01(volume);
-        seAudioSource.volume = seVolume;
+        foreach (var seSource in seAudioSources)
+        {
+            seSource.volume = seVolume;
+        }
         Debug.Log($"SetSEVolume called: volume = {volume}, seVolume = {seVolume}");
     }
 
