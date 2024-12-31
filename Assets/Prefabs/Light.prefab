@@ -530,7 +530,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maskMaterial: {fileID: 2100000, guid: 58ce893a711764a608d893bd739eb313, type: 2}
-  defaultRadius: 0.18
+  defaultRadius: 0
+  maxRadius: 1.2
   zoomSpeed: 1
   lightUpTime: 3
   lightStock: {fileID: 7631082771151813861}
