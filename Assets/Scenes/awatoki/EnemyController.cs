@@ -26,10 +26,6 @@ public class EnemyController : MonoBehaviour
     string nowAnime = "";
     string oldAnime = "";
 
-    // Coroutineを管理するための参照
-    private Coroutine enemySleepCoroutine;
-    private Coroutine enemyMoveCoroutine;
-
     void Start()
     {
         // アニメーターをとってくる
@@ -46,16 +42,21 @@ public class EnemyController : MonoBehaviour
             Debug.LogError("Player object with tag 'Player' not found!");
         }
 
-        // 初期の向きを設定
+        // 初期位置
+        defPos = transform.position;
+
+        // 初期の向き
         if (direction == "right")
         {
             transform.localScale = new Vector2(-1, 1); // 向きの変更
         }
 
-        // 初期位置
-        defPos = transform.position;
+        // 赤色の敵の場合、初期状態でアクティブにする
+        if (enemyColor == EnemyColor.Red)
+        {
+            isActive = true;
+        }
     }
-
     void Update()
     {
         if (player == null || isDead) return; // プレイヤーが見つからない場合や死亡している場合は処理をスキップ
@@ -101,12 +102,6 @@ public class EnemyController : MonoBehaviour
                     transform.localScale = new Vector2(1, 1); // 向きの変更
                 }
             }
-
-            // EnemyMove音の管理（5秒に1回繰り返し再生）
-            if (enemyMoveCoroutine == null)
-            {
-                enemyMoveCoroutine = StartCoroutine(PlayEnemyMoveSound());
-            }
         }
         else
         {
@@ -114,13 +109,24 @@ public class EnemyController : MonoBehaviour
             float dist = Vector2.Distance(transform.position, player.transform.position);
             if (dist < reactionDistance)
             {
-                isActive = true;
+                isActive = true; //起きている状態に変更
+
+                // このエネミーに関連する全てのSEを停止（寝息を止める）
+                SoundManager.instance.StopSE(gameObject);
+                SoundManager.instance.StopSELoop(gameObject);
             }
 
-            // EnemySleep音の管理（12秒に1回繰り返し再生）
-            if (enemySleepCoroutine == null)
+            // 効果音の判定
+            if (!isDead) //死んでいない
             {
-                enemySleepCoroutine = StartCoroutine(PlayEnemySleepSound());
+                if (isActive) //起きている
+                {
+                    SoundManager.instance.PlaySELoop(SEType.EnemyMove, gameObject);  // 足音を再生
+                }
+                if (!isActive && enemyColor != EnemyColor.Blue) //寝ている && 敵が青じゃない(青は寝息しない)
+                {
+                    SoundManager.instance.PlaySELoop(SEType.EnemySleep, gameObject);  // 寝息を再生
+                }
             }
         }
     }
@@ -152,7 +158,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         // Deadタグのオブジェクトに触れた場合
         if (collision.CompareTag("Dead"))
@@ -165,8 +171,12 @@ public class EnemyController : MonoBehaviour
                 // 移動を停止
                 isActive = false;
 
+                // このエネミーに関連する全てのSEを停止
+                SoundManager.instance.StopSE(gameObject);
+                SoundManager.instance.StopSELoop(gameObject);
+
                 // アニメーションをDeadに切り替える
-                nowAnime = deadAnime;
+                nowAnime = deadAnime;  
                 if (nowAnime != oldAnime)
                 {
                     animator.Play(nowAnime);
@@ -199,30 +209,6 @@ public class EnemyController : MonoBehaviour
                 }
             }
         }
-    }
-
-    private IEnumerator PlayEnemyMoveSound()
-    {
-        while (!isDead && isActive)
-        {
-            SoundManager.instance.PlaySE(SEType.EnemyMove);
-            yield return new WaitForSeconds(5f);
-        }
-
-        // Coroutineが終了したときは参照をリセット
-        enemyMoveCoroutine = null;
-    }
-
-    private IEnumerator PlayEnemySleepSound()
-    {
-        while (!isDead && !isActive)
-        {
-            SoundManager.instance.PlaySE(SEType.EnemySleep);
-            yield return new WaitForSeconds(12f);
-        }
-
-        // Coroutineが終了したときは参照をリセット
-        enemySleepCoroutine = null;
     }
 
     // 指定された色に基づいてアニメーション名を設定

@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// BGMの種類を列挙する列挙型。
+/// </summary>
 public enum BGMType
 {
     None,
@@ -9,6 +12,9 @@ public enum BGMType
     InEndRoll,
 }
 
+/// <summary>
+/// SEの種類を列挙する列挙型。
+/// </summary>
 public enum SEType
 {
     GameClear,
@@ -23,8 +29,12 @@ public enum SEType
     EnemySleep,
 }
 
+/// <summary>
+/// サウンドを管理するクラス。BGMとSEの再生・停止、ボリュームの設定などを行う。
+/// </summary>
 public class SoundManager : MonoBehaviour
 {
+    // --- 各種AudioClipの定義 ---
     public AudioClip bgmInTitle;
     public AudioClip bgmInGame;
     public AudioClip bgmInEndRoll;
@@ -39,132 +49,97 @@ public class SoundManager : MonoBehaviour
     public AudioClip seEnemyMove;
     public AudioClip seEnemySleep;
 
-    private AudioSource bgmAudioSource;
-    private List<AudioSource> seAudioSources = new List<AudioSource>();
-    private int sePoolSize = 3; // プールの最大数
+    // --- 内部変数 ---
+    private AudioSource bgmAudioSource; // BGM再生用AudioSource
+    private List<AudioSource> seAudioSources = new List<AudioSource>(); // SE再生用AudioSourceのプール
+    private Dictionary<AudioSource, GameObject> seSourceOwners = new Dictionary<AudioSource, GameObject>(); // AudioSourceとオーナー(GameObject)の関連付け
+    private int sePoolSize = 16; // SEのプールサイズ
 
-    [SerializeField] private float bgmVolume = 1.0f;
-    [SerializeField] private float seVolume = 1.0f;
-    public static SoundManager instance;
-    private BGMType playingBGM = BGMType.None;
+    [SerializeField] private float bgmVolume = 1.0f; // BGMの音量
+    [SerializeField] private float seVolume = 1.0f; // SEの音量
+    public static SoundManager instance; // シングルトンインスタンス
+    private BGMType playingBGM = BGMType.None; // 現在再生中のBGMの種類
 
+    /// <summary>
+    /// シングルトンの初期化とAudioSourceの設定を行う。
+    /// </summary>
     private void Awake()
     {
-        // 新しいインスタンスがすでに存在する場合、古いインスタンスを破棄
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject); // シーン遷移後も破棄されないようにする
+            DontDestroyOnLoad(gameObject); // シーンをまたいで破棄されないようにする
         }
         else
         {
-            Destroy(gameObject); // 新しいシーンに新たなインスタンスが作成されないようにする
+            Destroy(gameObject);
             return;
         }
 
+        // BGM用AudioSourceの初期化
         bgmAudioSource = gameObject.AddComponent<AudioSource>();
         bgmAudioSource.loop = true;
 
-        // SE用のAudioSourceをプールのサイズに合わせて生成
+        // SE用AudioSourceのプールを初期化
         for (int i = 0; i < sePoolSize; i++)
         {
             AudioSource seSource = gameObject.AddComponent<AudioSource>();
             seAudioSources.Add(seSource);
+            seSourceOwners[seSource] = null; // 初期化時はオーナーなし
         }
     }
 
-    private void Start()
-    {
-    }
+    // --- BGM再生関連のメソッド ---
+    public void PlayTitleBGM() => PlayBGM(BGMType.Title);
+    public void PlayInGameBGM() => PlayBGM(BGMType.InGame);
+    public void PlayEndRollBGM() => PlayBGM(BGMType.InEndRoll);
 
-    public void PlayTitleBGM()
-    {
-        PlayBGM(BGMType.Title);
-    }
-
-    public void PlayInGameBGM()
-    {
-        PlayBGM(BGMType.InGame);
-    }
-
-    public void PlayEndRollBGM()
-    {
-        PlayBGM(BGMType.InEndRoll);
-    }
-
+    /// <summary>
+    /// 指定したBGMを再生する。
+    /// </summary>
     public void PlayBGM(BGMType type)
     {
-        if (playingBGM == type)
-        {
-            return;
-        }
+        if (playingBGM == type) return; // 同じBGMが既に再生中の場合はスキップ
 
-        AudioClip bgmClip = null;
-        switch (type)
+        AudioClip bgmClip = type switch
         {
-            case BGMType.Title:
-                bgmClip = bgmInTitle;
-                break;
-            case BGMType.InGame:
-                bgmClip = bgmInGame;
-                break;
-            case BGMType.InEndRoll:
-                bgmClip = bgmInEndRoll;
-                break;
-        }
+            BGMType.Title => bgmInTitle,
+            BGMType.InGame => bgmInGame,
+            BGMType.InEndRoll => bgmInEndRoll,
+            _ => null,
+        };
 
         bgmAudioSource.clip = bgmClip;
         bgmAudioSource.volume = bgmVolume;
         bgmAudioSource.Play();
 
         playingBGM = type;
-
-        Debug.Log($"Playing BGM: {type}, Volume: {bgmVolume}");
     }
 
+    /// <summary>
+    /// 現在再生中のBGMを停止する。
+    /// </summary>
     public void StopBGM()
     {
         bgmAudioSource.Stop();
         playingBGM = BGMType.None;
-        Debug.Log("BGM Stopped");
     }
 
-    public void PlaySE(SEType type)
+    // --- SE再生関連のメソッド ---
+    public void PlaySE(SEType type, GameObject owner = null)
     {
-        AudioClip seClip = null;
-        switch (type)
+        AudioClip seClip = type switch
         {
-            case SEType.GameClear:
-                seClip = meGameClear;
-                break;
-            case SEType.GameOver:
-                seClip = meGameOver;
-                break;
-            case SEType.Shoot:
-                seClip = seShoot;
-                break;
-            case SEType.ItemGet:
-                seClip = seItemGet;
-                break;
-            case SEType.GetDamage:
-                seClip = seDamage;
-                break;
-            case SEType.Button:
-                seClip = seButton;
-                break;
-            case SEType.PlayerFootsteps:
-                seClip = sePlayerFootsteps;
-                break;
-            case SEType.PlayerFall:
-                seClip = sePlayerFall;
-                break;
-            case SEType.EnemyMove:
-                seClip = seEnemyMove;
-                break;
-            case SEType.EnemySleep:
-                seClip = seEnemySleep;
-                break;
-        }
+            SEType.GameClear => meGameClear,
+            SEType.GameOver => meGameOver,
+            SEType.Shoot => seShoot,
+            SEType.ItemGet => seItemGet,
+            SEType.GetDamage => seDamage,
+            SEType.Button => seButton,
+            SEType.PlayerFootsteps => sePlayerFootsteps,
+            SEType.PlayerFall => sePlayerFall,
+            _ => null,
+        };
 
         if (seClip == null)
         {
@@ -172,17 +147,15 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
-        // 空いているAudioSourceを見つける
         AudioSource availableSource = GetAvailableAudioSource();
 
         if (availableSource != null)
         {
             availableSource.PlayOneShot(seClip, seVolume);
-            Debug.Log($"Playing SE: {type}, Clip Name: {seClip.name}, Volume: {seVolume}");
+            seSourceOwners[availableSource] = owner;
         }
         else
         {
-            // すべてのSE AudioSourceが再生中なら最も古いものを停止して再生
             AudioSource oldestSource = seAudioSources[0];
             for (int i = 1; i < seAudioSources.Count; i++)
             {
@@ -197,21 +170,91 @@ public class SoundManager : MonoBehaviour
                 }
             }
 
-            // 最も古いAudioSourceを停止して新しいSEを再生
             oldestSource.Stop();
             oldestSource.PlayOneShot(seClip, seVolume);
-            Debug.Log($"Stopped oldest SE and playing new SE: {seClip.name}, Volume: {seVolume}");
+            seSourceOwners[oldestSource] = owner;
         }
     }
 
+    public void PlaySELoop(SEType type, GameObject owner = null)
+    {
+        AudioClip seClip = type switch
+        {
+            SEType.EnemyMove => seEnemyMove,
+            SEType.EnemySleep => seEnemySleep,
+            _ => null,
+        };
+
+        if (seClip == null)
+        {
+            Debug.LogWarning($"SE Clip is null for SEType: {type}");
+            return;
+        }
+
+        AudioSource availableSource = GetAvailableAudioSource();
+
+        if (availableSource != null)
+        {
+            availableSource.loop = true; // ループ再生を有効化
+            availableSource.clip = seClip; // クリップを設定
+            availableSource.Play(); // 再生開始
+            seSourceOwners[availableSource] = owner;
+        }
+        else
+        {
+            AudioSource oldestSource = seAudioSources[0];
+            for (int i = 1; i < seAudioSources.Count; i++)
+            {
+                if (!seAudioSources[i].isPlaying)
+                {
+                    oldestSource = seAudioSources[i];
+                    break;
+                }
+                else if (seAudioSources[i].time < oldestSource.time)
+                {
+                    oldestSource = seAudioSources[i];
+                }
+            }
+
+            oldestSource.Stop();
+            oldestSource.loop = true; // ループ再生を有効化
+            oldestSource.clip = seClip; // クリップを設定
+            oldestSource.Play(); // 再生開始
+            seSourceOwners[oldestSource] = owner;
+        }
+    }
+
+    /// <summary>
+    /// 指定したオーナーに関連付けられたSEを停止する。
+    /// </summary>
+    public void StopSE(GameObject owner)
+    {
+        foreach (var pair in seSourceOwners)
+        {
+            if (pair.Value == owner && pair.Key.isPlaying)
+            {
+                pair.Key.Stop();
+            }
+        }
+    }
+
+    public void StopSELoop(GameObject owner)
+    {
+        foreach (var pair in seSourceOwners)
+        {
+            if (pair.Value == owner && pair.Key.loop) // ループ中のSEを対象
+            {
+                pair.Key.Stop(); // ループしているSEを停止
+            }
+        }
+    }
+
+    // --- ユーティリティメソッド ---
     private AudioSource GetAvailableAudioSource()
     {
         foreach (var source in seAudioSources)
         {
-            if (!source.isPlaying)
-            {
-                return source;
-            }
+            if (!source.isPlaying) return source;
         }
         return null;
     }
@@ -220,7 +263,6 @@ public class SoundManager : MonoBehaviour
     {
         bgmVolume = Mathf.Clamp01(volume);
         bgmAudioSource.volume = bgmVolume;
-        Debug.Log($"SetBGMVolume called: volume = {volume}, bgmVolume = {bgmVolume}");
     }
 
     public void SetSEVolume(float volume)
@@ -230,18 +272,8 @@ public class SoundManager : MonoBehaviour
         {
             seSource.volume = seVolume;
         }
-        Debug.Log($"SetSEVolume called: volume = {volume}, seVolume = {seVolume}");
     }
 
-    public float GetBGMVolume()
-    {
-        Debug.Log($"GetBGMVolume called: bgmVolume = {bgmVolume}");
-        return bgmVolume;
-    }
-
-    public float GetSEVolume()
-    {
-        Debug.Log($"GetSEVolume called: seVolume = {seVolume}");
-        return seVolume;
-    }
+    public float GetBGMVolume() => bgmVolume;
+    public float GetSEVolume() => seVolume;
 }
