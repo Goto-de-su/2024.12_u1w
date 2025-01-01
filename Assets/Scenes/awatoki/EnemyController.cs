@@ -42,16 +42,21 @@ public class EnemyController : MonoBehaviour
             Debug.LogError("Player object with tag 'Player' not found!");
         }
 
-        // 初期の向きを設定
+        // 初期位置
+        defPos = transform.position;
+
+        // 初期の向き
         if (direction == "right")
         {
             transform.localScale = new Vector2(-1, 1); // 向きの変更
         }
 
-        // 初期位置
-        defPos = transform.position;
+        // 赤色の敵の場合、初期状態でアクティブにする
+        if (enemyColor == EnemyColor.Red)
+        {
+            isActive = true;
+        }
     }
-
     void Update()
     {
         if (player == null || isDead) return; // プレイヤーが見つからない場合や死亡している場合は処理をスキップ
@@ -118,7 +123,7 @@ public class EnemyController : MonoBehaviour
                 {
                     SoundManager.instance.PlaySELoop(SEType.EnemyMove, gameObject);  // 足音を再生
                 }
-                if (!isActive) //寝ている
+                if (!isActive && enemyColor != EnemyColor.Blue) //寝ている && 敵が青じゃない(青は寝息しない)
                 {
                     SoundManager.instance.PlaySELoop(SEType.EnemySleep, gameObject);  // 寝息を再生
                 }
