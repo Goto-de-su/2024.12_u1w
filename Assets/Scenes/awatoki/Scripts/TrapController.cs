@@ -5,12 +5,15 @@ public class TrapController : MonoBehaviour
 {
     public enum TrapColor { Red, Yellow, Blue }
     public TrapColor trapColor;
+     [SerializeField] private float detectionDistance = 20.0f; // 音声を再生する距離
 
     private bool isWaiting = true; // 罠が未発動の状態
     private bool isActive = false; // 常に起動し続ける状態
     private bool isDeadTrap = false; // Deadタグを持っている状態
 
     private Animator animator;
+    private GameObject player; // プレイヤーオブジェクト
+
     string waitAnime = "";
     string openAnime = "";
     string closeAnime = "";
@@ -26,12 +29,15 @@ public class TrapController : MonoBehaviour
         nowAnime = waitAnime;
         oldAnime = waitAnime;
 
+        // プレイヤーオブジェクトを取得
+        player = GameObject.FindWithTag("Player");
+
         // 赤色のトラップの場合、初期状態でアクティブにする
         if (trapColor == TrapColor.Red)
         {
             isActive = true;
             isWaiting = false;
-            nowAnime = closeAnime; // ゲーム開始時は閉じた状態からスタート
+            nowAnime = openAnime; // ゲーム開始時は開いた状態からスタート
             animator.Play(nowAnime);
         }
     }
@@ -44,25 +50,31 @@ public class TrapController : MonoBehaviour
         // アクティブ状態がtrueのときにアニメーションを交互に再生
         if (isActive)
         {
-            // 現在のアニメーションの状態を確認
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            
+
             // アニメーションが終了したかをチェック
-            if (stateInfo.normalizedTime >= 1f) // アニメーションの進行が100%を越えたら
+            if (stateInfo.normalizedTime >= 1f)
             {
-                // もし現在のアニメーションがオープンなら次はクローズ
+                float distance = GetDistanceToPlayer();
                 if (nowAnime == openAnime)
                 {
                     isDeadTrap = true;
                     animator.Play(closeAnime);
                     nowAnime = closeAnime;
+                    if (distance <= detectionDistance)
+                    {
+                        SoundManager.instance.PlaySE(SEType.FlowerClose, gameObject);
+                    }
                 }
-                // もし現在のアニメーションがクローズなら次はオープン
                 else if (nowAnime == closeAnime)
                 {
                     isDeadTrap = false;
                     animator.Play(openAnime);
                     nowAnime = openAnime;
+                    if (distance <= detectionDistance)
+                    {
+                        SoundManager.instance.PlaySE(SEType.FlowerOpen, gameObject);
+                    }
                 }
             }
         }
@@ -72,13 +84,18 @@ public class TrapController : MonoBehaviour
     {
         if (isWaiting)
         {
+            float distance = GetDistanceToPlayer();
+
             // プレイヤータグを持つオブジェクトが触れた場合
             if (collision.CompareTag("Player"))
             {
-                // 0.5秒待機後、トラップが発動する
                 StartCoroutine(WaitAndClose(0.5f));
+                if (distance <= detectionDistance)
+                {
+                    SoundManager.instance.PlaySE(SEType.Trap, gameObject);
+                }
 
-                // 黄色のトラップは、4秒待機後にwait状態に戻る
+                // 黄色いパックンはwait状態に戻る
                 if (trapColor == TrapColor.Yellow)
                 {
                     StartCoroutine(WaitAndOpen(4.0f));
@@ -88,19 +105,22 @@ public class TrapController : MonoBehaviour
             // エネミータグを持つオブジェクトが触れた場合
             else if (collision.CompareTag("Enemy"))
             {
-                // 即座にクローズアニメを再生してisWaitingをfalseにする
                 animator.Play(closeAnime);
                 nowAnime = closeAnime;
                 isWaiting = false;
+                if (distance <= detectionDistance)
+                {
+                    SoundManager.instance.PlaySE(SEType.Trap, gameObject);
+                }
 
-                // 触れたエネミーのEnemyControllerを取得してDie()を呼び出す
+                // 触れたエネミーの死亡処理を呼び出す
                 EnemyController enemyController = collision.GetComponent<EnemyController>();
                 if (enemyController != null)
                 {
-                    enemyController.Die();  // エネミーを死亡させる
+                    enemyController.Die();
                 }
-                
-                // 黄色のトラップは、4秒待機後にwait状態に戻る
+
+                // 黄色いパックンはwait状態に戻る
                 if (trapColor == TrapColor.Yellow)
                 {
                     StartCoroutine(WaitAndOpen(4.0f));
@@ -109,12 +129,15 @@ public class TrapController : MonoBehaviour
         }
     }
 
+    private float GetDistanceToPlayer()
+    {
+        if (player == null) return float.MaxValue;
+        return Vector2.Distance(transform.position, player.transform.position);
+    }
+
     private IEnumerator WaitAndClose(float waitTime)
     {
-        // 待機時間
         yield return new WaitForSeconds(waitTime);
-
-        // クローズアニメを再生
         animator.Play(closeAnime);
         nowAnime = closeAnime;
         isWaiting = false;
@@ -122,10 +145,7 @@ public class TrapController : MonoBehaviour
 
     private IEnumerator WaitAndOpen(float waitTime)
     {
-        // 待機時間
         yield return new WaitForSeconds(waitTime);
-
-        // オープンアニメを再生
         isDeadTrap = true;
         animator.Play(openAnime);
         nowAnime = openAnime;
@@ -134,14 +154,13 @@ public class TrapController : MonoBehaviour
 
     private void UpdateTrapTag()
     {
-        // isDeadTrapがTrueの場合にDeadタグを付与、Falseの場合はDeadタグを外す
         if (isDeadTrap)
         {
-            gameObject.tag = "Dead"; // Deadタグを設定
+            gameObject.tag = "Dead";
         }
         else
         {
-            gameObject.tag = "Untagged"; // Deadタグを外す
+            gameObject.tag = "Untagged";
         }
     }
 

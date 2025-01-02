@@ -103,6 +103,7 @@ public class EnemyController : MonoBehaviour
                     transform.localScale = new Vector2(1, 1); // 向きの変更
                 }
             }
+
         }
         else
         {
@@ -120,14 +121,21 @@ public class EnemyController : MonoBehaviour
             // 効果音の判定
             if (!isDead) //死んでいない
             {
-                if (isActive) //起きている
+                if (isActive && dist <= 20) //起きている && 距離が20以下
                 {
                     SoundManager.instance.PlaySELoop(SEType.EnemyMove, gameObject);  // 足音を再生
                 }
-                if (!isActive && enemyColor != EnemyColor.Blue) //寝ている && 敵が青じゃない(青は寝息しない)
+                if (!isActive && enemyColor != EnemyColor.Blue && dist <= 20) //寝ている && 敵が青じゃない(青は寝息しない) &&距離が20以下
                 {
                     SoundManager.instance.PlaySELoop(SEType.EnemySleep, gameObject);  // 寝息を再生
                 }
+            }
+
+            if (dist > 20) //距離が遠くなったら音を止める
+            {
+                // このエネミーに関連する全てのSEを停止（寝息を止める）
+                SoundManager.instance.StopSE(gameObject);
+                SoundManager.instance.StopSELoop(gameObject);
             }
         }
     }
@@ -212,7 +220,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-   // 死亡処理を関数化
+    // 死亡処理を関数化
     public void Die()
     {
         if (isDead) return; // すでに死亡している場合は何もしない
