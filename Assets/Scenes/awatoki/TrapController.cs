@@ -6,8 +6,9 @@ public class TrapController : MonoBehaviour
     public enum TrapColor { Red, Yellow, Blue }
     public TrapColor trapColor;
 
-    private bool isWaiting = true;
-    private bool isActive = false;
+    private bool isWaiting = true; // 罠が未発動の状態
+    private bool isActive = false; // 常に起動し続ける状態
+    private bool isDeadTrap = false; // Deadタグを持っている状態
 
     private Animator animator;
     string waitAnime = "";
@@ -37,6 +38,9 @@ public class TrapController : MonoBehaviour
 
     void Update()
     {
+        // isDeadTrapの状態に応じてタグを更新
+        UpdateTrapTag();
+
         // アクティブ状態がtrueのときにアニメーションを交互に再生
         if (isActive)
         {
@@ -49,12 +53,14 @@ public class TrapController : MonoBehaviour
                 // もし現在のアニメーションがオープンなら次はクローズ
                 if (nowAnime == openAnime)
                 {
+                    isDeadTrap = true;
                     animator.Play(closeAnime);
                     nowAnime = closeAnime;
                 }
                 // もし現在のアニメーションがクローズなら次はオープン
                 else if (nowAnime == closeAnime)
                 {
+                    isDeadTrap = false;
                     animator.Play(openAnime);
                     nowAnime = openAnime;
                 }
@@ -69,8 +75,14 @@ public class TrapController : MonoBehaviour
             // プレイヤータグを持つオブジェクトが触れた場合
             if (collision.CompareTag("Player"))
             {
-                // 0.5秒待機後、クローズアニメを再生してisWaitingをfalseにする
+                // 0.5秒待機後、トラップが発動する
                 StartCoroutine(WaitAndClose(0.5f));
+
+                // 黄色のトラップは、4秒待機後にwait状態に戻る
+                if (trapColor == TrapColor.Yellow)
+                {
+                    StartCoroutine(WaitAndOpen(4.0f));
+                }
             }
 
             // エネミータグを持つオブジェクトが触れた場合
@@ -80,21 +92,57 @@ public class TrapController : MonoBehaviour
                 animator.Play(closeAnime);
                 nowAnime = closeAnime;
                 isWaiting = false;
+
+                // 触れたエネミーのEnemyControllerを取得してDie()を呼び出す
+                EnemyController enemyController = collision.GetComponent<EnemyController>();
+                if (enemyController != null)
+                {
+                    enemyController.Die();  // エネミーを死亡させる
+                }
+                
+                // 黄色のトラップは、4秒待機後にwait状態に戻る
+                if (trapColor == TrapColor.Yellow)
+                {
+                    StartCoroutine(WaitAndOpen(4.0f));
+                }
             }
         }
     }
 
     private IEnumerator WaitAndClose(float waitTime)
     {
-        // 0.5秒待機
+        // 待機時間
         yield return new WaitForSeconds(waitTime);
 
         // クローズアニメを再生
         animator.Play(closeAnime);
         nowAnime = closeAnime;
-
-        // isWaitingをfalseにして待機状態を終了
         isWaiting = false;
+    }
+
+    private IEnumerator WaitAndOpen(float waitTime)
+    {
+        // 待機時間
+        yield return new WaitForSeconds(waitTime);
+
+        // オープンアニメを再生
+        isDeadTrap = true;
+        animator.Play(openAnime);
+        nowAnime = openAnime;
+        isWaiting = true;
+    }
+
+    private void UpdateTrapTag()
+    {
+        // isDeadTrapがTrueの場合にDeadタグを付与、Falseの場合はDeadタグを外す
+        if (isDeadTrap)
+        {
+            gameObject.tag = "Dead"; // Deadタグを設定
+        }
+        else
+        {
+            gameObject.tag = "Untagged"; // Deadタグを外す
+        }
     }
 
     private void SetAnimationsBasedOnColor()

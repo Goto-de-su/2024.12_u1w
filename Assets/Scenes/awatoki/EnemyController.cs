@@ -166,30 +166,7 @@ public class EnemyController : MonoBehaviour
         {
             if (!isDead) // すでに死んでいる場合は何もしない
             {
-                // 死亡処理
-                isDead = true;
-
-                // 移動を停止
-                isActive = false;
-
-                // このエネミーに関連する全てのSEを停止
-                SoundManager.instance.StopSE(gameObject);
-                SoundManager.instance.StopSELoop(gameObject);
-
-                // アニメーションをDeadに切り替える
-                nowAnime = deadAnime;
-                if (nowAnime != oldAnime)
-                {
-                    animator.Play(nowAnime);
-                    oldAnime = nowAnime;
-                }
-
-                // Rigidbody2Dの速度も停止
-                Rigidbody2D rbody = GetComponent<Rigidbody2D>();
-                if (rbody != null)
-                {
-                    rbody.linearVelocity = Vector2.zero;
-                }
+                Die(); // 死亡処理を関数で呼び出す
             }
         }
         else
@@ -234,5 +211,44 @@ public class EnemyController : MonoBehaviour
                 break;
         }
     }
-}
 
+   // 死亡処理を関数化
+    public void Die()
+    {
+        if (isDead) return; // すでに死亡している場合は何もしない
+
+        // 死亡処理を0.2秒後に行うコルーチンを開始
+        StartCoroutine(DieWithDelay());
+    }
+
+    private IEnumerator DieWithDelay()
+    {
+        // 0.5秒待機
+        yield return new WaitForSeconds(0.5f);
+
+        // 死亡処理
+        isDead = true;
+
+        // 移動を停止
+        isActive = false;
+
+        // このエネミーに関連する全てのSEを停止
+        SoundManager.instance.StopSE(gameObject);
+        SoundManager.instance.StopSELoop(gameObject);
+
+        // アニメーションをDeadに切り替える
+        nowAnime = deadAnime;
+        if (nowAnime != oldAnime)
+        {
+            animator.Play(nowAnime);
+            oldAnime = nowAnime;
+        }
+
+        // Rigidbody2Dの速度も停止
+        Rigidbody2D rbody = GetComponent<Rigidbody2D>();
+        if (rbody != null)
+        {
+            rbody.linearVelocity = Vector2.zero;
+        }
+    }
+}
