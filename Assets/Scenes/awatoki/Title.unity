@@ -739,7 +739,8 @@ MonoBehaviour:
   sePlayerFootsteps: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
   sePlayerFall: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
   seEnemyMove: {fileID: 8300000, guid: 781ebee7c52c7fa4fadc22bfd861137a, type: 3}
-  seEnemySleep: {fileID: 8300000, guid: 33709cd4cd6326c49b83b257a6542aeb, type: 3}
+  seEnemySleep: {fileID: 8300000, guid: 08dc32b873184044d964d08f836f5821, type: 3}
+  seHedgehogSleep: {fileID: 8300000, guid: 33709cd4cd6326c49b83b257a6542aeb, type: 3}
   bgmVolume: 1
   seVolume: 1
 --- !u!4 &902062504

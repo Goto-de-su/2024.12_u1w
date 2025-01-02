@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5621779059505146636}
   - component: {fileID: 2789713131129168601}
   - component: {fileID: 310286483409617063}
-  - component: {fileID: 4107278851978454326}
-  - component: {fileID: 3693514064429623503}
+  - component: {fileID: 1455879935842842572}
+  - component: {fileID: 8039009243001321675}
   m_Layer: 0
   m_Name: Enemy_Yellow
   m_TagString: Untagged
@@ -160,7 +160,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &4107278851978454326
+--- !u!61 &1455879935842842572
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,19 +194,19 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 1.6}
+  m_Offset: {x: 0, y: 0.25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 6.4, y: 6.4}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 6.4, y: 6.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 6.4, y: 3.2}
+  m_Size: {x: 1, y: 0.5}
   m_EdgeRadius: 0
---- !u!58 &3693514064429623503
+--- !u!58 &8039009243001321675
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -240,5 +240,5 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 1}
-  m_Radius: 1
+  m_Offset: {x: 0, y: 0.25}
+  m_Radius: 0.24193753

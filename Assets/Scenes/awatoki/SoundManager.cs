@@ -27,6 +27,7 @@ public enum SEType
     PlayerFall,
     EnemyMove,
     EnemySleep,
+    HedgehogSleep,
 }
 
 /// <summary>
@@ -48,6 +49,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip sePlayerFall;
     public AudioClip seEnemyMove;
     public AudioClip seEnemySleep;
+    public AudioClip seHedgehogSleep;
 
     // --- 内部変数 ---
     private AudioSource bgmAudioSource; // BGM再生用AudioSource
@@ -182,6 +184,7 @@ public class SoundManager : MonoBehaviour
         {
             SEType.EnemyMove => seEnemyMove,
             SEType.EnemySleep => seEnemySleep,
+            SEType.HedgehogSleep => seHedgehogSleep,
             _ => null,
         };
 
@@ -238,16 +241,48 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void StopSELoop(GameObject owner)
-    {
-        foreach (var pair in seSourceOwners)
-        {
-            if (pair.Value == owner && pair.Key.loop) // ループ中のSEを対象
-            {
-                pair.Key.Stop(); // ループしているSEを停止
-            }
-        }
-    }
+	public void StopSELoop(GameObject owner)
+	{
+		foreach (var pair in seSourceOwners)
+		{
+			if (pair.Value == owner)
+			{
+				// AudioSourceがnullか破棄されている場合、処理をスキップ
+				if (pair.Key == null)
+				{
+					continue;
+				}
+				
+				// ループしているSEを対象
+				if (pair.Key.loop)
+				{
+					// AudioSourceがまだ再生中か確認
+					if (pair.Key.isPlaying)
+					{
+						pair.Key.Stop(); // ループしているSEを停止
+					}
+				}
+			}
+		}
+	}
+
+	public void OnDestroy()
+	{
+		// SEを停止したい場合、破棄されたAudioSourceにアクセスしないようにする
+		foreach (var pair in seSourceOwners)
+		{
+			if (pair.Key == null) // AudioSourceがnullの場合、処理をスキップ
+			{
+				continue;
+			}
+			
+			// AudioSourceが再生中か確認
+			if (pair.Key.isPlaying)
+			{
+				pair.Key.Stop();
+			}
+		}
+	}
 
     // --- ユーティリティメソッド ---
     private AudioSource GetAvailableAudioSource()
