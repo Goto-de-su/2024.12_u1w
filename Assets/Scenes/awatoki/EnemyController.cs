@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,6 +57,7 @@ public class EnemyController : MonoBehaviour
             isActive = true;
         }
     }
+
     void Update()
     {
         if (player == null || isDead) return; // プレイヤーが見つからない場合や死亡している場合は処理をスキップ
@@ -176,7 +177,7 @@ public class EnemyController : MonoBehaviour
                 SoundManager.instance.StopSELoop(gameObject);
 
                 // アニメーションをDeadに切り替える
-                nowAnime = deadAnime;  
+                nowAnime = deadAnime;
                 if (nowAnime != oldAnime)
                 {
                     animator.Play(nowAnime);
@@ -217,20 +218,21 @@ public class EnemyController : MonoBehaviour
         switch (enemyColor)
         {
             case EnemyColor.Red:
-                sleepAnime = "Red_sleep";
-                walkAnime = "Red_walk";
-                deadAnime = "Red_dead";
+                sleepAnime = "EnemyRed_sleep";
+                walkAnime = "EnemyRed_walk";
+                deadAnime = "EnemyRed_dead";
                 break;
             case EnemyColor.Yellow:
-                sleepAnime = "Yellow_sleep";
-                walkAnime = "Yellow_walk";
-                deadAnime = "Yellow_dead";
+                sleepAnime = "EnemyYellow_sleep";
+                walkAnime = "EnemyYellow_walk";
+                deadAnime = "EnemyYellow_dead";
                 break;
             case EnemyColor.Blue:
-                sleepAnime = "Blue_sleep";
-                walkAnime = "Blue_walk";
-                deadAnime = "Blue_dead";
+                sleepAnime = "EnemyBlue_sleep";
+                walkAnime = "EnemyBlue_walk";
+                deadAnime = "EnemyBlue_dead";
                 break;
         }
     }
 }
+
