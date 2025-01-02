@@ -19,15 +19,17 @@ public enum SEType
 {
     GameClear,
     GameOver,
-    Shoot,
-    ItemGet,
-    GetDamage,
-    Button,
-    PlayerFootsteps,
+    PlayerJump,
     PlayerFall,
+    PlayerWalk,
+    PlayerRun,
     EnemyMove,
     EnemySleep,
     HedgehogSleep,
+    FlowerOpen,
+    FlowerClose,
+    Trap,
+    Light,
 }
 
 /// <summary>
@@ -41,15 +43,17 @@ public class SoundManager : MonoBehaviour
     public AudioClip bgmInEndRoll;
     public AudioClip meGameClear;
     public AudioClip meGameOver;
-    public AudioClip seShoot;
-    public AudioClip seItemGet;
-    public AudioClip seDamage;
-    public AudioClip seButton;
-    public AudioClip sePlayerFootsteps;
+    public AudioClip sePlayerJump;
     public AudioClip sePlayerFall;
+    public AudioClip sePlayerWalk;
+    public AudioClip sePlayerRun;
     public AudioClip seEnemyMove;
     public AudioClip seEnemySleep;
     public AudioClip seHedgehogSleep;
+    public AudioClip seFlowerOpen;
+    public AudioClip seFlowerClose;
+    public AudioClip seTrap;
+    public AudioClip seLight;
 
     // --- 内部変数 ---
     private AudioSource bgmAudioSource; // BGM再生用AudioSource
@@ -134,12 +138,11 @@ public class SoundManager : MonoBehaviour
         {
             SEType.GameClear => meGameClear,
             SEType.GameOver => meGameOver,
-            SEType.Shoot => seShoot,
-            SEType.ItemGet => seItemGet,
-            SEType.GetDamage => seDamage,
-            SEType.Button => seButton,
-            SEType.PlayerFootsteps => sePlayerFootsteps,
+            SEType.PlayerJump => sePlayerJump,
             SEType.PlayerFall => sePlayerFall,
+            SEType.FlowerOpen => seFlowerOpen,
+            SEType.FlowerClose => seFlowerClose,
+            SEType.Trap => seTrap,
             _ => null,
         };
 
@@ -182,9 +185,12 @@ public class SoundManager : MonoBehaviour
     {
         AudioClip seClip = type switch
         {
+            SEType.PlayerWalk => sePlayerWalk,
+            SEType.PlayerRun => sePlayerRun,
             SEType.EnemyMove => seEnemyMove,
             SEType.EnemySleep => seEnemySleep,
             SEType.HedgehogSleep => seHedgehogSleep,
+            SEType.Light => seLight,
             _ => null,
         };
 
