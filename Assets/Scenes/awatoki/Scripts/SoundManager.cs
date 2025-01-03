@@ -66,6 +66,11 @@ public class SoundManager : MonoBehaviour
     public static SoundManager instance; // シングルトンインスタンス
     private BGMType playingBGM = BGMType.None; // 現在再生中のBGMの種類
 
+    private bool isFadingOut = false; // フェードアウト中かどうか
+    private float fadeOutDuration = 1/0f; // フェードアウトの時間
+    private float fadeOutTimer = 0f; // フェードアウトの経過時間
+    private BGMType nextBGMType = BGMType.None; // 次に再生するBGM
+
     /// <summary>
     /// シングルトンの初期化とAudioSourceの設定を行う。
     /// </summary>
@@ -76,10 +81,21 @@ public class SoundManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject); // シーンをまたいで破棄されないようにする
         }
-        else
+        else if (instance != this)
         {
             Destroy(gameObject);
             return;
+        }
+
+        // シーン内に別のSoundManagerがある場合、それを優先
+        SoundManager[] soundManagers = FindObjectsOfType<SoundManager>();
+        foreach (var soundManager in soundManagers)
+        {
+            if (soundManager != this)
+            {
+                Destroy(gameObject); // 現在のインスタンスを削除
+                return;
+            }
         }
 
         // BGM用AudioSourceの初期化
@@ -92,6 +108,31 @@ public class SoundManager : MonoBehaviour
             AudioSource seSource = gameObject.AddComponent<AudioSource>();
             seAudioSources.Add(seSource);
             seSourceOwners[seSource] = null; // 初期化時はオーナーなし
+        }
+    }
+
+    /// <summary>
+    /// BGMのフェードアウト処理を管理し、フェードアウト後に次のBGMを再生する。
+    /// </summary>
+    private void Ubdate()
+    {
+        if (isFadingOut)
+        {
+            fadeOutTimer += Time.deltaTime;
+            bgmAudioSource.volume = Mathf.Lerp(bgmVolume, 0, fadeOutTimer / fadeOutDuration);
+
+            if (fadeOutTimer >= fadeOutDuration)
+            {
+                bgmAudioSource.Stop();
+                isFadingOut = false;
+                fadeOutTimer = 0;
+
+                if (nextBGMType != BGMType.None)
+                {
+                    PlayBGM(nextBGMType); // 次のBGMを再生
+                    nextBGMType = BGMType.None;
+                }
+            }
         }
     }
 
@@ -123,12 +164,38 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 現在のBGMをフェードアウトさせ、指定した新しいBGMを再生する準備を行う。
+    /// </summary>
+    /// <param name="fadeDuration">フェードアウトにかける時間</param>
+    public void FadeOutAndPlayBGM(BGMType newBGMType, float fadeDuration = 1.0f)
+    {
+        if (isFadingOut || playingBGM == newBGMType) return; // 同じBGMが再生中の場合はスキップ
+
+        isFadingOut = true;
+        fadeOutDuration = fadeDuration; // フェードアウトの時間を設定
+        nextBGMType = newBGMType; // タイマーをリセット
+    }
+
+    /// <summary>
     /// 現在再生中のBGMを停止する。
     /// </summary>
     public void StopBGM()
     {
         bgmAudioSource.Stop();
         playingBGM = BGMType.None;
+    }
+
+    /// <summary>
+    /// 現在再生中のBGMをフェードアウトさせて停止する。
+    /// </summary>
+    /// <param name="fadeDuration">フェードアウトにかける時間</param>
+    public void FadeOutAndStopBGM(float fadeDuration = 1.0f)
+    {
+        if (isFadingOut || playingBGM == BGMType.None) return; // 既にフェードアウト中、または再生中のBGMがない場合は処理をスキップ
+
+        isFadingOut = true;
+        fadeOutDuration = fadeDuration; // フェードアウトの時間を設定
+        fadeOutTimer = 0f; // タイマーをリセット
     }
 
     // --- SE再生関連のメソッド ---

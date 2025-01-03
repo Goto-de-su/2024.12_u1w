@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5256719333595200388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6534001420857263914}
+  - component: {fileID: 2363509502097576536}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6534001420857263914
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256719333595200388}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 260.51968, y: 232.39508, z: -4.503808}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2363509502097576536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256719333595200388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e866023a58da2b4394407fecccf1988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmInTitle: {fileID: 8300000, guid: 26af55b40a89f3b4ea3b482c8fcb072f, type: 3}
+  bgmInGame: {fileID: 8300000, guid: e781706fa451f324d9e461a8402403ee, type: 3}
+  bgmInEndRoll: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
+  meGameClear: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
+  meGameOver: {fileID: 8300000, guid: 909b67a6f1c262a4984f2af0beb65746, type: 3}
+  sePlayerJump: {fileID: 8300000, guid: c1f5e5db15804934a9c17b36541bbbff, type: 3}
+  sePlayerFall: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
+  sePlayerWalk: {fileID: 8300000, guid: 3599f6e08e0db94469cdda1e4da3e0cf, type: 3}
+  sePlayerRun: {fileID: 8300000, guid: 0cd0b31270fc70148882951d69db35cf, type: 3}
+  seEnemyMove: {fileID: 8300000, guid: 781ebee7c52c7fa4fadc22bfd861137a, type: 3}
+  seEnemySleep: {fileID: 8300000, guid: 08dc32b873184044d964d08f836f5821, type: 3}
+  seHedgehogSleep: {fileID: 8300000, guid: 33709cd4cd6326c49b83b257a6542aeb, type: 3}
+  seFlowerOpen: {fileID: 8300000, guid: 3088c576dd03d3f4fa330701ff45ef54, type: 3}
+  seFlowerClose: {fileID: 8300000, guid: 9471c0d409e4da8408fe496e6d1ae6ea, type: 3}
+  seTrap: {fileID: 8300000, guid: df2cc90ee32c1fc43bd4aa3faedb0b72, type: 3}
+  seLight: {fileID: 8300000, guid: 59da26ced2371dc4cbd12b8942e5809d, type: 3}
+  bgmVolume: 1
+  seVolume: 1
