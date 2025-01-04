@@ -19,7 +19,10 @@ public class Hedgehog : MonoBehaviour
         player = GameObject.FindWithTag("Player");
 
         // 寝息のループ再生を開始
-        SoundManager.instance.PlaySELoop(SEType.HedgehogSleep, gameObject);
+        /// NOTE: 2025/01/05 Gogona記載
+        /// ハリネズミが発するSEはSoundRangeAttenuationクラスで調整するため
+        /// コメントアウトしています。
+        /* SoundManager.instance.PlaySELoop(SEType.HedgehogSleep, gameObject); */
     }
 
     void Update()
@@ -31,8 +34,11 @@ public class Hedgehog : MonoBehaviour
             initialScale.y + scaleChange,
             initialScale.z
         );
-
-        // プレイヤーとの距離をチェック
+        
+        /// NOTE: 2025/01/05 Gogona記載
+        /// ハリネズミが発するSEはSoundRangeAttenuationクラスで調整するため
+        /// コメントアウトしています。
+        /* // プレイヤーとの距離をチェック
         if (player != null)
         {
             float distance = Vector2.Distance(transform.position, player.transform.position);
@@ -40,21 +46,24 @@ public class Hedgehog : MonoBehaviour
             if (distance <= detectionDistance && !isSoundPlaying)
             {
                 // 距離が20以下で音声を再生
-                SoundManager.instance.PlaySELoop(SEType.HedgehogSleep, gameObject);
+                // SoundManager.instance.PlaySELoop(SEType.HedgehogSleep, gameObject);
                 isSoundPlaying = true;
             }
             else if (distance > detectionDistance && isSoundPlaying)
             {
                 // 距離が20を超えたら音声を停止
-                SoundManager.instance.StopSELoop(gameObject);
+                // SoundManager.instance.StopSELoop(gameObject);
                 isSoundPlaying = false;
             }
-        }
+        } */
     }
 
-    void OnDestroy()
+    /// NOTE: 2025/01/05 Gogona記載
+    /// ハリネズミが発するSEはSoundRangeAttenuationクラスで調整するため
+    /// コメントアウトしています。
+    /* void OnDestroy()
     {
         // オブジェクトが破棄される際にループSEを停止
-        SoundManager.instance.StopSELoop(gameObject);
-    }
+        // SoundManager.instance.StopSELoop(gameObject);
+    } */
 }
