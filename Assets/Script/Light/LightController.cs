@@ -1,13 +1,8 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class LightController : MonoBehaviour
 {
-    [SerializeField, Tooltip("マスクのマテリアル")]
-    private Material maskMaterial;
-    [SerializeField, Tooltip("初期半径")]
-    private float defaultRadius = 0.03f;
-    [SerializeField, Tooltip("最大半径")]
-    private float maxRadius = 1.5f;
     [SerializeField, Tooltip("光が拡大縮小する速さ")]
     private float zoomSpeed = 1;
     [SerializeField, Tooltip("光が全体を照らしている時間")]
@@ -15,6 +10,10 @@ public class LightController : MonoBehaviour
     [SerializeField, Tooltip("ライトアップを管理するコンポーネント")]
     private LightStock lightStock;
 
+    private Light2D light2D;
+    private float defaultOuterRadius;
+    private float defaultInnerRadius;
+    private const float maxRadius = 10.5f;
     private bool isZooming = false;
     private float currentRadius;
     private bool canExpand;
@@ -25,8 +24,11 @@ public class LightController : MonoBehaviour
 
     void Start()
     {
-        maskMaterial.SetFloat("_Radius", defaultRadius);
-        currentRadius = defaultRadius;
+        light2D = GetComponent<Light2D>();
+        defaultInnerRadius = light2D.pointLightInnerRadius;
+        defaultOuterRadius = light2D.pointLightOuterRadius;
+        light2D.pointLightInnerRadius = 0;
+        currentRadius = defaultOuterRadius;
         canExpand = true;
     }
 
@@ -58,16 +60,19 @@ public class LightController : MonoBehaviour
     /// </summary>
     void ZoomLight()
     {
-        if (currentRadius <= maxRadius && currentRadius >= defaultRadius)
+        if (currentRadius <= maxRadius + defaultOuterRadius && currentRadius >= defaultOuterRadius)
         {
             currentRadius += Time.deltaTime * zoomSpeed;
-            maskMaterial.SetFloat("_Radius", currentRadius);
+            light2D.pointLightInnerRadius += Time.deltaTime * zoomSpeed;
+            light2D.pointLightOuterRadius = currentRadius;
         }
         // 範囲の拡大縮小が終わったら
         else
         {
-            currentRadius = canExpand ? maxRadius : defaultRadius;
-            maskMaterial.SetFloat("_Radius", currentRadius);
+            currentRadius = canExpand ? maxRadius + defaultOuterRadius : defaultOuterRadius;
+            light2D.pointLightInnerRadius = canExpand ? maxRadius : defaultInnerRadius;
+            // maskMaterial.SetFloat("_Radius", currentRadius);
+            light2D.pointLightOuterRadius = currentRadius;
             isZooming = false;
             canExpand = !canExpand;
             
