@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerJump jump;
     [SerializeField] private InputSettings inputSettings;
     [SerializeField] private new LightController light;
+    [SerializeField] private PlayerStateManager stateManager;
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -48,7 +49,8 @@ public class PlayerController : MonoBehaviour
 
         if (jumpInput)
         {
-            jump.StartJump(movement.GetCurrentVelocity(), isRunning);
+            // 入力方向を使用して斜めジャンプを実現
+            jump.StartJump(movement.GetCurrentVelocity(), horizontalInput);
             jumpInput = false;
         }
     }
@@ -57,8 +59,8 @@ public class PlayerController : MonoBehaviour
     {
         if (!isSkillActive)
         {
-            float leftInput = inputSettings.IsLeftPressed() ? -1 : 0;
-            float rightInput = inputSettings.IsRightPressed() ? 1 : 0;
+            float leftInput = inputSettings.IsLeftPressed() ? -1f : 0f;
+            float rightInput = inputSettings.IsRightPressed() ? 1f : 0f;
             horizontalInput = leftInput + rightInput;
 
             if (inputSettings.IsJumpTriggered())
@@ -98,7 +100,6 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateSprite()
     {
-        // 地上にいる時のみ向きを変更
         if (rb.IsTouchingLayers())
         {
             Vector2 velocity = movement.GetCurrentVelocity();

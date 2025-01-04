@@ -6,9 +6,11 @@ public class PlayerJump : MonoBehaviour
 
     [SerializeField] private JumpParameters parameters;
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private PlayerStateManager stateManager;
 
+    private Vector2 jumpVelocity;
     private Vector2 jumpStartVelocity;
-    private bool isInAir;
+    private float inertiaVelocity;
     private bool isJumping;
     private float jumpStartHeight;
     private float jumpHoldTime;
@@ -19,30 +21,81 @@ public class PlayerJump : MonoBehaviour
         {
             rb = GetComponent<Rigidbody2D>();
         }
+        if (stateManager == null)
+        {
+            stateManager = GetComponent<PlayerStateManager>();
+        }
     }
 
-    public void StartJump(Vector2 currentVelocity, bool isRunning)
+    public void StartJump(Vector2 currentVelocity, float inputDirection)
     {
         if (rb.IsTouchingLayers())
         {
             isJumping = true;
-            isInAir = true;
             jumpStartHeight = transform.position.y;
             jumpHoldTime = 0f;
-
-            // Œ»İ‚Ì‘¬“x‚ğ‚»‚Ì‚Ü‚Üg—p
             jumpStartVelocity = currentVelocity;
 
-            // ƒWƒƒƒ“ƒv‚Ì‰‘¬‚ğİ’è
-            Vector2 jumpVelocity = new Vector2(jumpStartVelocity.x, CalculateJumpVelocity());
+            // ï¿½ï¿½Ô‚ÉŠï¿½Ã‚ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½xï¿½ÌŒvï¿½Z
+            jumpVelocity = CalculateJumpVelocity(currentVelocity, inputDirection);
             rb.linearVelocity = jumpVelocity;
+
+            // ï¿½ï¿½Ô‚ÌXï¿½V
+            stateManager.SetJumpState();
         }
     }
 
-    private float CalculateJumpVelocity()
+    private Vector2 CalculateJumpVelocity(Vector2 currentVelocity, float inputDirection)
+    {
+        float verticalVelocity = CalculateVerticalVelocity();
+        float horizontalVelocity = CalculateHorizontalVelocity(currentVelocity, inputDirection);
+
+        return new Vector2(horizontalVelocity, verticalVelocity);
+    }
+
+    private float CalculateVerticalVelocity()
     {
         float gravityMagnitude = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
         return gravityMagnitude * parameters.jumpForceMultiplier * TARGET_FPS * Time.fixedDeltaTime;
+    }
+
+    private float CalculateHorizontalVelocity(Vector2 currentVelocity, float inputDirection)
+    {
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ì‰eï¿½ï¿½ï¿½ï¿½ï¿½vï¿½Z
+        float inertiaVelocity = currentVelocity.x * parameters.inertiaInfluence;
+        if (Mathf.Abs(inertiaVelocity) < parameters.minimumInertia)
+        {
+            inertiaVelocity = Mathf.Sign(inertiaVelocity) * parameters.minimumInertia;
+        }
+
+        // ï¿½ï¿½Ô‚ÉŠï¿½Ã‚ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½vï¿½Í‚ÌŒï¿½ï¿½ï¿½
+        float stateBasedForce = GetStateBasedJumpForce();
+
+        // ï¿½ï¿½ï¿½Í•ï¿½ï¿½ï¿½ï¿½Ì‰eï¿½ï¿½ï¿½ï¿½ï¿½vï¿½Z
+        float inputForce = inputDirection * parameters.directionalJumpForce * stateBasedForce;
+
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Æ“ï¿½ï¿½Í‚ï¿½gï¿½İï¿½ï¿½í‚¹ï¿½ÄÅIï¿½Iï¿½Èï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        return inertiaVelocity + inputForce;
+    }
+
+    private float GetStateBasedJumpForce()
+    {
+        switch (stateManager.GetGroundState())
+        {
+            case PlayerStateManager.GroundState.WALK_ACCELERATING:
+            case PlayerStateManager.GroundState.WALK_MAX_SPEED:
+                return parameters.walkingJumpForce;
+
+            case PlayerStateManager.GroundState.RUN_ACCELERATING:
+            case PlayerStateManager.GroundState.RUN_MAX_SPEED:
+                return parameters.runningJumpForce;
+
+            case PlayerStateManager.GroundState.DECELERATE:
+                return parameters.decelerateJumpForce;
+
+            default:
+                return parameters.walkingJumpForce;
+        }
     }
 
     public void UpdateJump(bool isJumpHeld)
@@ -75,11 +128,6 @@ public class PlayerJump : MonoBehaviour
         );
 
         AdjustJumpHeight(targetHeight);
-
-        if (isInAir && rb.IsTouchingLayers())
-        {
-            isInAir = false;
-        }
     }
 
     public void HandleAirControl(float inputDirection)
@@ -90,11 +138,9 @@ public class PlayerJump : MonoBehaviour
 
             if (inputDirection != 0)
             {
-                // “ü—Í•ûŒü‚É‰‚¶‚Ä…•½‘¬“x‚ğ’²®
                 float velocityAdjustment = parameters.airControlSpeed * inputDirection;
                 currentVelocity.x += velocityAdjustment;
 
-                // ƒWƒƒƒ“ƒvŠJn‚Ì‘¬“x‚ğãŒÀ‚Æ‚µ‚Ä§ŒÀ
                 float maxSpeed = Mathf.Abs(jumpStartVelocity.x);
                 currentVelocity.x = Mathf.Clamp(currentVelocity.x, -maxSpeed, maxSpeed);
             }
