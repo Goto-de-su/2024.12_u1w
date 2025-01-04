@@ -2,35 +2,47 @@ using UnityEngine;
 
 public class PlayerJump : MonoBehaviour
 {
-    [SerializeField] private JumpParameters parameters;
+    private const float TARGET_FPS = 60f;
 
-    private Rigidbody2D rb;
-    private float airTimer;
+    [SerializeField] private JumpParameters parameters;
+    [SerializeField] private Rigidbody2D rb;
+
     private Vector2 jumpStartVelocity;
     private bool isInAir;
     private bool isJumping;
-    private float jumpStartTime;
+    private float jumpStartHeight;
     private float jumpHoldTime;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        if (rb == null)
+        {
+            rb = GetComponent<Rigidbody2D>();
+        }
     }
 
-    public void StartJump(Vector2 currentVelocity)
+    public void StartJump(Vector2 currentVelocity, bool isRunning)
     {
         if (rb.IsTouchingLayers())
         {
             isJumping = true;
             isInAir = true;
-            airTimer = 0f;
-            jumpStartTime = Time.time;
+            jumpStartHeight = transform.position.y;
             jumpHoldTime = 0f;
+
+            // 現在の速度をそのまま使用
             jumpStartVelocity = currentVelocity;
 
-            Vector2 jumpVelocity = new Vector2(jumpStartVelocity.x, parameters.initialJumpSpeed);
+            // ジャンプの初速を設定
+            Vector2 jumpVelocity = new Vector2(jumpStartVelocity.x, CalculateJumpVelocity());
             rb.linearVelocity = jumpVelocity;
         }
+    }
+
+    private float CalculateJumpVelocity()
+    {
+        float gravityMagnitude = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
+        return gravityMagnitude * parameters.jumpForceMultiplier * TARGET_FPS * Time.fixedDeltaTime;
     }
 
     public void UpdateJump(bool isJumpHeld)
@@ -39,7 +51,7 @@ public class PlayerJump : MonoBehaviour
 
         if (isJumpHeld)
         {
-            jumpHoldTime += Time.deltaTime * 60f;
+            jumpHoldTime += Time.deltaTime * TARGET_FPS;
 
             if (jumpHoldTime >= parameters.maxJumpHoldFrames)
             {
@@ -64,15 +76,9 @@ public class PlayerJump : MonoBehaviour
 
         AdjustJumpHeight(targetHeight);
 
-        if (isInAir)
+        if (isInAir && rb.IsTouchingLayers())
         {
-            airTimer += Time.deltaTime;
-
-            if (rb.IsTouchingLayers())
-            {
-                isInAir = false;
-                Debug.Log($"Air Time without input: {airTimer:F2} seconds");
-            }
+            isInAir = false;
         }
     }
 
@@ -80,9 +86,20 @@ public class PlayerJump : MonoBehaviour
     {
         if (!rb.IsTouchingLayers())
         {
-            Vector2 airVelocity = rb.linearVelocity;
-            airVelocity.x = parameters.airControlSpeed * inputDirection;
-            rb.linearVelocity = airVelocity;
+            Vector2 currentVelocity = rb.linearVelocity;
+
+            if (inputDirection != 0)
+            {
+                // 入力方向に応じて水平速度を調整
+                float velocityAdjustment = parameters.airControlSpeed * inputDirection;
+                currentVelocity.x += velocityAdjustment;
+
+                // ジャンプ開始時の速度を上限として制限
+                float maxSpeed = Mathf.Abs(jumpStartVelocity.x);
+                currentVelocity.x = Mathf.Clamp(currentVelocity.x, -maxSpeed, maxSpeed);
+            }
+
+            rb.linearVelocity = currentVelocity;
         }
     }
 
@@ -90,7 +107,7 @@ public class PlayerJump : MonoBehaviour
     {
         if (!isJumping || rb.linearVelocity.y <= 0) return;
 
-        float currentHeight = transform.position.y - jumpStartTime;
+        float currentHeight = transform.position.y - jumpStartHeight;
         if (currentHeight >= targetHeight)
         {
             Vector2 velocity = rb.linearVelocity;

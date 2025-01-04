@@ -54,10 +54,10 @@ public class InputSettings
                Input.GetKeyDown(alternativeJumpKey);
     }
 
-    public bool IsDashTriggered()
+    public bool IsRunning()
     {
-        return Input.GetKeyDown(primaryDashKey) ||
-               Input.GetKeyDown(alternativeDashKey);
+        return Input.GetKey(primaryDashKey) ||
+               Input.GetKey(alternativeDashKey);
     }
 
     public bool IsSkillPressed()
