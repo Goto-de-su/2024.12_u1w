@@ -3,18 +3,37 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private MovementParameters parameters;
+    [SerializeField] private PlayerStateManager stateManager;
 
     private Rigidbody2D rb;
     private Vector2 currentVelocity;
     private float inertiaVelocity;
     private float previousInputDirection;
 
+    public struct MovementState
+    {
+        public bool isGrounded;
+        public Vector2 velocity;
+        public float inertiaVelocity;
+        public bool isDecelerating;
+    }
+
     public MovementParameters Parameters => parameters;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        if (stateManager == null)
+        {
+            stateManager = GetComponent<PlayerStateManager>();
+        }
+
         ResetMovementState();
+    }
+
+    private void Start()
+    {
+        stateManager.SetMaxSpeeds(parameters.maxWalkSpeed, parameters.runSpeed);
     }
 
     private void ResetMovementState()
@@ -39,10 +58,12 @@ public class PlayerMovement : MonoBehaviour
         {
             UpdateMovementWithInput(inputDirection, isRunning);
         }
-        //前の入力を保存
+
         previousInputDirection = inputDirection;
-        //現在の速度を更新
         currentVelocity = rb.linearVelocity;
+
+        // 状態を更新
+        stateManager.UpdateState(currentVelocity, inputDirection, isRunning);
     }
 
     private bool IsWallInDirection(float direction)
@@ -97,5 +118,26 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 GetCurrentVelocity()
     {
         return currentVelocity;
+    }
+
+    public float GetInertiaVelocity()
+    {
+        return inertiaVelocity;
+    }
+
+    public bool IsDecelerating()
+    {
+        return Mathf.Abs(inertiaVelocity) > 0.1f && previousInputDirection == 0f;
+    }
+
+    public MovementState GetCurrentMovementState()
+    {
+        return new MovementState
+        {
+            isGrounded = rb.IsTouchingLayers(),
+            velocity = currentVelocity,
+            inertiaVelocity = inertiaVelocity,
+            isDecelerating = IsDecelerating()
+        };
     }
 }

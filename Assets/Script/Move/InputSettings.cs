@@ -30,6 +30,14 @@ public class InputSettings
     public KeyCode alternativeDashKey = KeyCode.LeftControl;
     public KeyCode skillKey = KeyCode.E;
 
+    // “ü—Í’l‚ğ-1.0f`1.0f‚Ì”ÍˆÍ‚Å•Ô‚·
+    public float GetHorizontalInput()
+    {
+        float leftInput = IsLeftPressed() ? -1f : 0f;
+        float rightInput = IsRightPressed() ? 1f : 0f;
+        return leftInput + rightInput;
+    }
+
     public bool IsLeftPressed()
     {
         return Input.GetKey(primaryMovementKeys.left) ||
