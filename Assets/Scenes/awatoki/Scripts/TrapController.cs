@@ -7,6 +7,17 @@ public class TrapController : MonoBehaviour
     public TrapColor trapColor;
      [SerializeField] private float detectionDistance = 20.0f; // 音声を再生する距離
 
+    // NOTE:
+    // 2025/01/05 Gogona記載
+    // トラップのSESEを追加
+    [SerializeField, Tooltip("トラップが開くSE")]
+    private AudioClip trapOpenSE;
+    [SerializeField, Tooltip("トラップが閉じるSE")]
+    private AudioClip trapCloseSE;
+    [SerializeField, Tooltip("攻撃SE")]
+    private AudioClip trapAttackSE;
+    private AudioSource audioSource;
+
     private bool isWaiting = true; // 罠が未発動の状態
     private bool isActive = false; // 常に起動し続ける状態
     private bool isDeadTrap = false; // Deadタグを持っている状態
@@ -40,6 +51,8 @@ public class TrapController : MonoBehaviour
             nowAnime = openAnime; // ゲーム開始時は開いた状態からスタート
             animator.Play(nowAnime);
         }
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -61,20 +74,22 @@ public class TrapController : MonoBehaviour
                     isDeadTrap = true;
                     animator.Play(closeAnime);
                     nowAnime = closeAnime;
-                    if (distance <= detectionDistance)
+                    /* if (distance <= detectionDistance)
                     {
                         SoundManager.instance.PlaySE(SEType.FlowerClose, gameObject);
-                    }
+                    } */
+                    audioSource.PlayOneShot(trapCloseSE);
                 }
                 else if (nowAnime == closeAnime)
                 {
                     isDeadTrap = false;
                     animator.Play(openAnime);
                     nowAnime = openAnime;
-                    if (distance <= detectionDistance)
+                    /* if (distance <= detectionDistance)
                     {
                         SoundManager.instance.PlaySE(SEType.FlowerOpen, gameObject);
-                    }
+                    } */
+                    audioSource.PlayOneShot(trapOpenSE);
                 }
             }
         }
@@ -90,10 +105,11 @@ public class TrapController : MonoBehaviour
             if (collision.CompareTag("Player"))
             {
                 StartCoroutine(WaitAndClose(0.5f));
-                if (distance <= detectionDistance)
+                /* if (distance <= detectionDistance)
                 {
                     SoundManager.instance.PlaySE(SEType.Trap, gameObject);
-                }
+                } */
+                audioSource.PlayOneShot(trapAttackSE);
 
                 // 黄色いパックンはwait状態に戻る
                 if (trapColor == TrapColor.Yellow)
@@ -108,10 +124,11 @@ public class TrapController : MonoBehaviour
                 animator.Play(closeAnime);
                 nowAnime = closeAnime;
                 isWaiting = false;
-                if (distance <= detectionDistance)
+                /* if (distance <= detectionDistance)
                 {
                     SoundManager.instance.PlaySE(SEType.Trap, gameObject);
-                }
+                } */
+                audioSource.PlayOneShot(trapAttackSE);
 
                 // 触れたエネミーの死亡処理を呼び出す
                 EnemyController enemyController = collision.GetComponent<EnemyController>();
