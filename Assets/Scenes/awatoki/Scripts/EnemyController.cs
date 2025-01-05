@@ -13,6 +13,16 @@ public class EnemyController : MonoBehaviour
     public float reactionDistance = 5.0f; // 反応する距離
     public float range = 0.0f;            // 動き回る範囲
     public float chaseRange = 5.0f;       // プレイヤーを追いかける距離
+
+    // NOTE:
+    // 2025/01/05 Gogona記載
+    // EnemyのSEを追加
+    [SerializeField, Tooltip("敵が寝ているSE")]
+    private AudioClip enemySleepSE;
+    [SerializeField, Tooltip("敵が歩くSE")]
+    private AudioClip enemyMoveSE;
+    private AudioSource audioSource;
+
     Vector3 defPos;                       // 初期位置
     bool isActive = false;                // アクティブフラグ
     bool isDead = false;                  // 死亡フラグ
@@ -51,10 +61,15 @@ public class EnemyController : MonoBehaviour
             transform.localScale = new Vector2(-1, 1); // 向きの変更
         }
 
+        audioSource = GetComponent<AudioSource>();
+
         // 赤色の敵の場合、初期状態でアクティブにする
         if (enemyColor == EnemyColor.Red)
         {
             isActive = true;
+            audioSource.clip = enemyMoveSE;
+            audioSource.loop = true;
+            audioSource.Play();
         }
     }
 
@@ -114,8 +129,9 @@ public class EnemyController : MonoBehaviour
                 isActive = true; //起きている状態に変更
 
                 // このエネミーに関連する全てのSEを停止（寝息を止める）
-                SoundManager.instance.StopSE(gameObject);
-                SoundManager.instance.StopSELoop(gameObject);
+                /* SoundManager.instance.StopSE(gameObject);
+                SoundManager.instance.StopSELoop(gameObject); */
+                audioSource.Stop();
             }
 
             // 効果音の判定
@@ -123,20 +139,26 @@ public class EnemyController : MonoBehaviour
             {
                 if (isActive && dist <= 20) //起きている && 距離が20以下
                 {
-                    SoundManager.instance.PlaySELoop(SEType.EnemyMove, gameObject);  // 足音を再生
+                    // SoundManager.instance.PlaySELoop(SEType.EnemyMove, gameObject);  // 足音を再生
+                    audioSource.clip = enemyMoveSE;
+                    audioSource.loop = true;
+                    audioSource.Play();
                 }
                 if (!isActive && enemyColor != EnemyColor.Blue && dist <= 20) //寝ている && 敵が青じゃない(青は寝息しない) &&距離が20以下
                 {
-                    SoundManager.instance.PlaySELoop(SEType.EnemySleep, gameObject);  // 寝息を再生
+                    // SoundManager.instance.PlaySELoop(SEType.EnemySleep, gameObject);  // 寝息を再生
+                    audioSource.clip = enemySleepSE;
+                    audioSource.loop = true;
+                    audioSource.Play();
                 }
             }
 
-            if (dist > 20) //距離が遠くなったら音を止める
+            /* if (dist > 20) //距離が遠くなったら音を止める
             {
                 // このエネミーに関連する全てのSEを停止（寝息を止める）
                 SoundManager.instance.StopSE(gameObject);
                 SoundManager.instance.StopSELoop(gameObject);
-            }
+            } */
         }
     }
 
@@ -241,8 +263,10 @@ public class EnemyController : MonoBehaviour
         isActive = false;
 
         // このエネミーに関連する全てのSEを停止
-        SoundManager.instance.StopSE(gameObject);
-        SoundManager.instance.StopSELoop(gameObject);
+        /* SoundManager.instance.StopSE(gameObject);
+        SoundManager.instance.StopSELoop(gameObject); */
+        audioSource.Stop();
+        
 
         // アニメーションをDeadに切り替える
         nowAnime = deadAnime;

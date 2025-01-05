@@ -5,8 +5,9 @@ using UnityEngine;
 public class SoundRangeAttenuation : MonoBehaviour
 {
     [SerializeField, Tooltip("音が聞こえる距離")]
-    private float maxAudibleDistance = 15f;
-    private const float offscreenDistance = 10.0f;
+    private float maxAudibleDistance = 10.0f;
+    [SerializeField, Tooltip("音が一定の距離")]
+    private float certainVolumeDistance = 5.0f;
     
     private AudioSource audioSource;
     private float masterVolume;
@@ -37,6 +38,7 @@ public class SoundRangeAttenuation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        cameraPosition = Camera.main.transform.position;
         sideSign = IsRightSide() ? 1 : -1;
         rangeWithCamera = Vector2.Distance(cameraPosition, transform.position);
         
@@ -56,23 +58,23 @@ public class SoundRangeAttenuation : MonoBehaviour
         if (!shouldToPutSound) return;
         
         // カメラ外かつ音が聞こえる範囲
-        if (rangeWithCamera > offscreenDistance　&& rangeWithCamera < maxAudibleDistance)
+        if (rangeWithCamera > certainVolumeDistance && rangeWithCamera < maxAudibleDistance)
         {
             audioSource.panStereo = sideSign;
             // 距離に応じてボリュームを設定
-            audioSource.volume = Mathf.InverseLerp(maxAudibleDistance, offscreenDistance, rangeWithCamera) * masterVolume;
+            audioSource.volume = Mathf.InverseLerp(maxAudibleDistance, certainVolumeDistance, rangeWithCamera) * masterVolume;
         }
         // カメラ内のとき
-        else if (rangeWithCamera <= offscreenDistance)
+        else if (rangeWithCamera <= certainVolumeDistance)
         {
             audioSource.volume = masterVolume;
             if (IsRightSide())
             {
-                audioSource.panStereo = Mathf.InverseLerp(cameraPosition.x, cameraPosition.x + offscreenDistance, transform.position.x);
+                audioSource.panStereo = Mathf.InverseLerp(cameraPosition.x, cameraPosition.x + certainVolumeDistance, transform.position.x);
             }
             else
             {
-                audioSource.panStereo = -Mathf.InverseLerp(cameraPosition.x, cameraPosition.x - offscreenDistance, transform.position.x);
+                audioSource.panStereo = -Mathf.InverseLerp(cameraPosition.x, cameraPosition.x - certainVolumeDistance, transform.position.x);
             }
         }
     }
