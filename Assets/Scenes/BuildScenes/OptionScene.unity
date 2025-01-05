@@ -992,6 +992,7 @@ GameObject:
   - component: {fileID: 541861261}
   - component: {fileID: 541861260}
   - component: {fileID: 541861259}
+  - component: {fileID: 541861262}
   m_Layer: 5
   m_Name: Button (Legacy)
   m_TagString: Untagged
@@ -1061,7 +1062,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 541861260}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 541861262}
+        m_TargetAssemblyTypeName: ButtonSceneTransition, Assembly-CSharp
+        m_MethodName: LoadNextScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &541861260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1100,6 +1113,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 541861257}
   m_CullTransparentMesh: 1
+--- !u!114 &541861262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541861257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65f3a0db0f80c3344861b7bf337488d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextSceneName: TitleScene
+  transitionButton: {fileID: 541861259}
 --- !u!1 &625790803
 GameObject:
   m_ObjectHideFlags: 0
