@@ -127,10 +127,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trapColor: 0
-  detectionDistance: 20
-  trapOpenSE: {fileID: 8300000, guid: 3088c576dd03d3f4fa330701ff45ef54, type: 3}
-  trapCloseSE: {fileID: 8300000, guid: 9471c0d409e4da8408fe496e6d1ae6ea, type: 3}
-  trapAttackSE: {fileID: 8300000, guid: df2cc90ee32c1fc43bd4aa3faedb0b72, type: 3}
+  detectionDistance: 2
+  resetTime: 8
+  trapInterval: 2
 --- !u!61 &1523999824331313656
 BoxCollider2D:
   m_ObjectHideFlags: 0

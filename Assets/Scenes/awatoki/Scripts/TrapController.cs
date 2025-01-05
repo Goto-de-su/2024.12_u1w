@@ -5,18 +5,10 @@ public class TrapController : MonoBehaviour
 {
     public enum TrapColor { Red, Yellow, Blue }
     public TrapColor trapColor;
-     [SerializeField] private float detectionDistance = 20.0f; // 音声を再生する距離
 
-    // NOTE:
-    // 2025/01/05 Gogona記載
-    // トラップのSESEを追加
-    [SerializeField, Tooltip("トラップが開くSE")]
-    private AudioClip trapOpenSE;
-    [SerializeField, Tooltip("トラップが閉じるSE")]
-    private AudioClip trapCloseSE;
-    [SerializeField, Tooltip("攻撃SE")]
-    private AudioClip trapAttackSE;
-    private AudioSource audioSource;
+    [SerializeField] private float detectionDistance = 20.0f; // 音声を再生する距離
+    [SerializeField] private float resetTime = 4.0f; // 黄色のリセット待機時間
+    [SerializeField] private float trapInterval = 2.0f; // 赤色のインターバル
 
     private bool isWaiting = true; // 罠が未発動の状態
     private bool isActive = false; // 常に起動し続ける状態
@@ -24,13 +16,14 @@ public class TrapController : MonoBehaviour
 
     private Animator animator;
     private GameObject player; // プレイヤーオブジェクト
+    private Coroutine activeTrapCoroutine;
 
-    string waitAnime = "";
-    string openAnime = "";
-    string closeAnime = "";
-    string closedAnime = "";
-    string nowAnime = "";
-    string oldAnime = "";
+    private string waitAnime = "";
+    private string openAnime = "";
+    private string closeAnime = "";
+    private string closedAnime = "";
+    private string nowAnime = "";
+    private string oldAnime = "";
 
     void Start()
     {
@@ -51,8 +44,6 @@ public class TrapController : MonoBehaviour
             nowAnime = openAnime; // ゲーム開始時は開いた状態からスタート
             animator.Play(nowAnime);
         }
-
-        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -63,34 +54,17 @@ public class TrapController : MonoBehaviour
         // アクティブ状態がtrueのときにアニメーションを交互に再生
         if (isActive)
         {
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
-            // アニメーションが終了したかをチェック
-            if (stateInfo.normalizedTime >= 1f)
+            if (activeTrapCoroutine == null)
             {
-                float distance = GetDistanceToPlayer();
-                if (nowAnime == openAnime)
-                {
-                    isDeadTrap = true;
-                    animator.Play(closeAnime);
-                    nowAnime = closeAnime;
-                    /* if (distance <= detectionDistance)
-                    {
-                        SoundManager.instance.PlaySE(SEType.FlowerClose, gameObject);
-                    } */
-                    audioSource.PlayOneShot(trapCloseSE);
-                }
-                else if (nowAnime == closeAnime)
-                {
-                    isDeadTrap = false;
-                    animator.Play(openAnime);
-                    nowAnime = openAnime;
-                    /* if (distance <= detectionDistance)
-                    {
-                        SoundManager.instance.PlaySE(SEType.FlowerOpen, gameObject);
-                    } */
-                    audioSource.PlayOneShot(trapOpenSE);
-                }
+                activeTrapCoroutine = StartCoroutine(ActiveTrap());
+            }
+        }
+        else
+        {
+            if (activeTrapCoroutine != null)
+            {
+                StopCoroutine(activeTrapCoroutine);
+                activeTrapCoroutine = null;
             }
         }
     }
@@ -105,16 +79,15 @@ public class TrapController : MonoBehaviour
             if (collision.CompareTag("Player"))
             {
                 StartCoroutine(WaitAndClose(0.5f));
-                /* if (distance <= detectionDistance)
+                if (distance <= detectionDistance)
                 {
                     SoundManager.instance.PlaySE(SEType.Trap, gameObject);
-                } */
-                audioSource.PlayOneShot(trapAttackSE);
+                }
 
                 // 黄色いパックンはwait状態に戻る
                 if (trapColor == TrapColor.Yellow)
                 {
-                    StartCoroutine(WaitAndOpen(4.0f));
+                    StartCoroutine(WaitAndOpen(resetTime));
                 }
             }
 
@@ -124,11 +97,10 @@ public class TrapController : MonoBehaviour
                 animator.Play(closeAnime);
                 nowAnime = closeAnime;
                 isWaiting = false;
-                /* if (distance <= detectionDistance)
+                if (distance <= detectionDistance)
                 {
                     SoundManager.instance.PlaySE(SEType.Trap, gameObject);
-                } */
-                audioSource.PlayOneShot(trapAttackSE);
+                }
 
                 // 触れたエネミーの死亡処理を呼び出す
                 EnemyController enemyController = collision.GetComponent<EnemyController>();
@@ -140,7 +112,7 @@ public class TrapController : MonoBehaviour
                 // 黄色いパックンはwait状態に戻る
                 if (trapColor == TrapColor.Yellow)
                 {
-                    StartCoroutine(WaitAndOpen(4.0f));
+                    StartCoroutine(WaitAndOpen(resetTime));
                 }
             }
         }
@@ -158,15 +130,40 @@ public class TrapController : MonoBehaviour
         animator.Play(closeAnime);
         nowAnime = closeAnime;
         isWaiting = false;
+
+        // 黄色いトラップがクローズした場合に再度オープンする処理
+        if (trapColor == TrapColor.Yellow)
+        {
+            StopCoroutine(nameof(WaitAndOpen)); // 既存のコルーチンを停止
+            StartCoroutine(WaitAndOpen(resetTime)); // 再度オープン
+        }
     }
 
     private IEnumerator WaitAndOpen(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        isDeadTrap = true;
+        isDeadTrap = false; // "Dead" タグを解除
         animator.Play(openAnime);
         nowAnime = openAnime;
         isWaiting = true;
+    }
+
+    private IEnumerator ActiveTrap()
+    {
+        while (isActive)
+        {
+            // ①クローズアニメを再生
+            yield return StartCoroutine(WaitAndClose(0f));
+
+            // ②2秒待つ
+            yield return new WaitForSeconds(trapInterval);
+
+            // ③オープンアニメを再生
+            yield return StartCoroutine(WaitAndOpen(0f));
+
+            // ④0秒待つ
+            yield return new WaitForSeconds(0f);
+        }
     }
 
     private void UpdateTrapTag()
