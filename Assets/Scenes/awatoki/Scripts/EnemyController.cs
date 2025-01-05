@@ -125,7 +125,7 @@ public class EnemyController : MonoBehaviour
                 {
                     SoundManager.instance.PlaySELoop(SEType.EnemyMove, gameObject);  // 足音を再生
                 }
-                if (!isActive && enemyColor != EnemyColor.Blue && dist <= 20) //寝ている && 敵が青じゃない(青は寝息しない) &&距離が20以下
+                if (!isActive && enemyColor != EnemyColor.Yellow && dist <= 20) //寝ている && 敵が黄じゃない(黄は寝息しない) &&距離が20以下
                 {
                     SoundManager.instance.PlaySELoop(SEType.EnemySleep, gameObject);  // 寝息を再生
                 }
