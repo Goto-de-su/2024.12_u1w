@@ -2140,6 +2140,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1966671864190870647, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 273388746}
+    - target: {fileID: 1966671864190870647, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
+      propertyPath: stateManager
+      value: 
+      objectReference: {fileID: 273388748}
+    - target: {fileID: 1966671864190870647, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
       propertyPath: parameters.maxJumpHeight
       value: 3.5
       objectReference: {fileID: 0}
@@ -2150,6 +2158,10 @@ PrefabInstance:
     - target: {fileID: 1966671864190870647, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
       propertyPath: parameters.airControlSpeed
       value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966671864190870647, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
+      propertyPath: parameters.inertiaInfluence
+      value: 0.952
       objectReference: {fileID: 0}
     - target: {fileID: 1966671864190870647, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
       propertyPath: parameters.initialJumpSpeed
@@ -2238,6 +2250,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8495300948056790239, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 273388740}
+    - targetCorrespondingSourceObject: {fileID: 8495300948056790239, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 273388748}
   m_SourcePrefab: {fileID: 100100000, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
 --- !u!1001 &205060213
 PrefabInstance:
@@ -2606,6 +2621,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!50 &273388746 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 2039100011004578627, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
+  m_PrefabInstance: {fileID: 197543330}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &273388748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273388731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e10610ae1e5d414e92ad7596166e2e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &278165993 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1897147561370177960, guid: 2a25f0709707df640bef7313bd5336d8, type: 3}
@@ -29095,8 +29127,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "AD\uFF1A\u5DE6\u53F3\u79FB\u52D5\u3000\u3000SPACE:\u30B8\u30E3\u30F3\u30D7\u3000"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4a1096ad02f934649be71e3306f08912, type: 2}
-  m_sharedMaterial: {fileID: -6863973604125777949, guid: 4a1096ad02f934649be71e3306f08912, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -29972,8 +30004,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u3000E\u9577\u62BC:\u706F\u308A\u3092\u4F7F\u3046"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4a1096ad02f934649be71e3306f08912, type: 2}
-  m_sharedMaterial: {fileID: -6863973604125777949, guid: 4a1096ad02f934649be71e3306f08912, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
