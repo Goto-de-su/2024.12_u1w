@@ -49,7 +49,6 @@ public class PlayerController : MonoBehaviour
 
         if (jumpInput)
         {
-            // 入力方向を使用して斜めジャンプを実現
             jump.StartJump(movement.GetCurrentVelocity(), horizontalInput);
             jumpInput = false;
         }
@@ -75,6 +74,7 @@ public class PlayerController : MonoBehaviour
             if (inputSettings.IsSkillPressed() && isStationary)
             {
                 isSkillActive = true;
+                stateManager.SetSkillState();  // スキル状態に遷移
                 if (light != null)
                 {
                     light.SetLightUpStartTime();
@@ -91,6 +91,7 @@ public class PlayerController : MonoBehaviour
         if (inputSettings.IsSkillReleased() && isSkillActive)
         {
             isSkillActive = false;
+            stateManager.ClearSkillState();  // スキル状態を解除
             if (light != null)
             {
                 light.SetLightUpEndTime();
