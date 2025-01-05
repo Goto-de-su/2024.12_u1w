@@ -729,17 +729,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3372680328638702252, guid: a8b31d465b6f742ccb0edae8007d3709, type: 3}
   m_PrefabInstance: {fileID: 811545894}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &811545896 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 576333590362467409, guid: a8b31d465b6f742ccb0edae8007d3709, type: 3}
-  m_PrefabInstance: {fileID: 811545894}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2931ba679a7649de8af452f54251f62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1118038524
 GameObject:
   m_ObjectHideFlags: 0
@@ -931,6 +920,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e10610ae1e5d414e92ad7596166e2e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  landingStateDuration: 0.5
+--- !u!95 &1706818361
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328254281}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: abcb38791a846e54591c2526f28ee1e8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1706818362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328254281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98bc8814c3942704386db554281f3f23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1706818361}
+  stateManager: {fileID: 0}
+  animationSettings:
+    animatorController: {fileID: 0}
+    idleAnimation: {fileID: 7400000, guid: 291f7150355e6c1488c32a89dd14dce0, type: 2}
+    walkAnimation: {fileID: 7400000, guid: 13d6d9c53a1cbaf4795e04b3c0acfb62, type: 2}
+    runAnimation: {fileID: 7400000, guid: 20ebc936c1b55f745a07dfe834ebe029, type: 2}
+    jumpAnimation: {fileID: 0}
+    landingAnimation: {fileID: 0}
+    deadAnimation: {fileID: 0}
+    skillAnimation: {fileID: 0}
+    defaultTransitionDuration: 0.1
+    quickTransitionDuration: 0.05
+  currentSpeedParameter: CurrentSpeed
+  verticalSpeedParameter: VerticalSpeed
+  isGroundedParameter: IsGrounded
+  onAnimationComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!50 &1706818363 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 2039100011004578627, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
+  m_PrefabInstance: {fileID: 6967734927032110018}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1861306960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1109,10 +1160,18 @@ PrefabInstance:
       propertyPath: m_FlipY
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1254448110026546998, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0157a851f2cd3374a901d63e671fab3d, type: 3}
     - target: {fileID: 1611858967955443435, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
       propertyPath: light
       value: 
-      objectReference: {fileID: 811545896}
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966671864190870647, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 1706818363}
     - target: {fileID: 1966671864190870647, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
       propertyPath: stateManager
       value: 
@@ -1176,6 +1235,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8495300948056790239, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1706818360}
+    - targetCorrespondingSourceObject: {fileID: 8495300948056790239, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1706818362}
+    - targetCorrespondingSourceObject: {fileID: 8495300948056790239, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1706818361}
   m_SourcePrefab: {fileID: 100100000, guid: 289cdd9d441804c409a756db6f4b56a8, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

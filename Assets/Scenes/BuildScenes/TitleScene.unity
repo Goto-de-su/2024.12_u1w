@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 245251128}
   - component: {fileID: 245251127}
   m_Layer: 5
-  m_Name: Button (3)
+  m_Name: ExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 582786217}
   - component: {fileID: 582786216}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: SettingButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,7 +372,7 @@ GameObject:
   - component: {fileID: 676571095}
   - component: {fileID: 676571094}
   m_Layer: 5
-  m_Name: Button
+  m_Name: CreditButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -739,15 +739,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08f136f5c87e4e4496e784ccb81ee01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startButton: {fileID: 0}
-  optionsButton: {fileID: 0}
-  creditsButton: {fileID: 0}
-  exitButton: {fileID: 0}
+  startButton: {fileID: 1823376687}
+  optionsButton: {fileID: 582786216}
+  creditsButton: {fileID: 676571094}
+  exitButton: {fileID: 245251127}
   titleBackButton: {fileID: 0}
   titleSceneName: TitleScene
-  gameSceneName: GameScene
+  gameSceneName: OpeningScene
   optionSceneName: OptionScene
-  creditsSceneName: CreditsScene
+  creditsSceneName: Credits
 --- !u!1 &1444136578
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,7 +1080,7 @@ GameObject:
   - component: {fileID: 1823376688}
   - component: {fileID: 1823376687}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: StartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
