@@ -361,7 +361,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &73940493
 Transform:
   m_ObjectHideFlags: 0
@@ -477,14 +477,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.03
@@ -783,14 +775,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 32.955288
@@ -993,14 +977,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: -19.024712
@@ -1181,14 +1157,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (9)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.01471138
@@ -16815,14 +16783,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (7)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 21.97
@@ -17287,14 +17247,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.96529
@@ -17709,14 +17661,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (12)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.9685879
@@ -18489,14 +18433,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (13)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.925289
@@ -18790,14 +18726,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 31.975288
@@ -22125,14 +22053,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.995289
@@ -22655,14 +22575,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (15)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.024712
@@ -23758,14 +23670,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (11)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 25.985287
@@ -25265,14 +25169,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.044712
@@ -25819,14 +25715,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 16.985287
@@ -26503,14 +26391,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.964712
@@ -28690,14 +28570,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (14)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.004711
@@ -30178,14 +30050,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (16)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.925289
@@ -30713,14 +30577,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hedgehog (10)
       objectReference: {fileID: 0}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
-    - target: {fileID: 5644835329415666924, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d875e48c83e21844d9348964061f49d5, type: 3}
     - target: {fileID: 6861065132318943000, guid: e493cf85fc7354f4ba1178f83bff8fdf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 26.995289

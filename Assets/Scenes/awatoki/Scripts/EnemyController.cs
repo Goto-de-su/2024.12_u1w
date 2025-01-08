@@ -71,6 +71,10 @@ public class EnemyController : MonoBehaviour
             audioSource.loop = true;
             audioSource.Play();
         }
+
+        audioSource.clip = enemySleepSE;
+        audioSource.loop = true;
+        audioSource.Play();
     }
 
     void Update()
@@ -85,6 +89,10 @@ public class EnemyController : MonoBehaviour
             {
                 animator.Play(nowAnime);
                 oldAnime = nowAnime;
+
+                audioSource.clip = enemyMoveSE;
+                audioSource.loop = true;
+                audioSource.Play();
             }
 
             // プレイヤーとの距離をチェックして追いかける
@@ -134,7 +142,7 @@ public class EnemyController : MonoBehaviour
                 audioSource.Stop();
             }
 
-            // 効果音の判定
+            /* // 効果音の判定
             if (!isDead) //死んでいない
             {
                 if (isActive && dist <= 20) //起きている && 距離が20以下
@@ -151,7 +159,7 @@ public class EnemyController : MonoBehaviour
                     audioSource.loop = true;
                     audioSource.Play();
                 }
-            }
+            } */
 
             /* if (dist > 20) //距離が遠くなったら音を止める
             {
