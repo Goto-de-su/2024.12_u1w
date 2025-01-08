@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 6189497882333325442}
   - component: {fileID: 1525092607975454348}
   - component: {fileID: 7430092496234596311}
-  - component: {fileID: 758934216441271917}
   m_Layer: 0
   m_Name: Enemy_Red
   m_TagString: Untagged
@@ -345,20 +344,6 @@ AudioSource:
     m_PostInfinity: 2
     m_RotationOrder: 4
 --- !u!114 &7430092496234596311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5136469033463633489}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4effb5e929ed384fa9b46d445b89ba9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxAudibleDistance: 10
-  certainVolumeDistance: 5
---- !u!114 &758934216441271917
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
