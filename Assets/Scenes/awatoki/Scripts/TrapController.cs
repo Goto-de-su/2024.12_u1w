@@ -10,6 +10,17 @@ public class TrapController : MonoBehaviour
     [SerializeField] private float resetTime = 4.0f; // 黄色のリセット待機時間
     [SerializeField] private float trapInterval = 2.0f; // 赤色のインターバル
 
+    // NOTE:
+    // 2025/01/05 Gogona記載
+    // 個々から発するSEを個別管理する必要があるためにSEを追加
+    [SerializeField, Tooltip("トラップが開くSE")]
+    private AudioClip trapOpenSE;
+    [SerializeField, Tooltip("トラップが閉じるSE")]
+    private AudioClip trapCloseSE;
+    [SerializeField, Tooltip("トラップが発動するSE")]
+    private AudioClip trapSE;
+    private AudioSource audioSource;
+
     private bool isWaiting = true; // 罠が未発動の状態
     private bool isActive = false; // 常に起動し続ける状態
     private bool isDeadTrap = false; // Deadタグを持っている状態
@@ -44,6 +55,8 @@ public class TrapController : MonoBehaviour
             nowAnime = openAnime; // ゲーム開始時は開いた状態からスタート
             animator.Play(nowAnime);
         }
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -81,7 +94,7 @@ public class TrapController : MonoBehaviour
                 StartCoroutine(WaitAndClose(0.5f));
                 if (distance <= detectionDistance)
                 {
-                    SoundManager.instance.PlaySE(SEType.Trap, gameObject);
+                    audioSource.PlayOneShot(trapSE);
                 }
 
                 // 黄色いパックンはwait状態に戻る
@@ -99,7 +112,7 @@ public class TrapController : MonoBehaviour
                 isWaiting = false;
                 if (distance <= detectionDistance)
                 {
-                    SoundManager.instance.PlaySE(SEType.Trap, gameObject);
+                    audioSource.PlayOneShot(trapSE);
                 }
 
                 // 触れたエネミーの死亡処理を呼び出す
@@ -127,6 +140,8 @@ public class TrapController : MonoBehaviour
     private IEnumerator WaitAndClose(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
+        audioSource.PlayOneShot(trapCloseSE);
+        if (TrapColor.Red != trapColor) Debug.Log($"[{gameObject.name}] Trap is now close.");
         animator.Play(closeAnime);
         nowAnime = closeAnime;
         isWaiting = false;
@@ -143,6 +158,7 @@ public class TrapController : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         isDeadTrap = false; // "Dead" タグを解除
+        if (TrapColor.Red != trapColor) audioSource.PlayOneShot(trapOpenSE);
         animator.Play(openAnime);
         nowAnime = openAnime;
         isWaiting = true;
