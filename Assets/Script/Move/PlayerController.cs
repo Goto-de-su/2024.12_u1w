@@ -1,13 +1,14 @@
 using UnityEngine;
+using UnityEngine.InputSystem;  // InputSystemの名前空間を追加
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerJump jump;
-    [SerializeField] private InputSettings inputSettings;
-    [SerializeField] private new LightController light;
+    [SerializeField] private LightController light;
     [SerializeField] private PlayerStateManager stateManager;
 
+    private PlayerControls controls;  // PlayerControlsインスタンス
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
 
@@ -23,6 +24,18 @@ public class PlayerController : MonoBehaviour
 
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+        controls = new PlayerControls();  // PlayerControlsインスタンス作成
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();  // 入力を有効にする
+    }
+
+    private void OnDisable()
+    {
+        controls.Disable();  // 入力を無効にする
     }
 
     private void Update()
@@ -33,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        bool isRunning = inputSettings.IsRunning();
+        bool isRunning = controls.Player.Run.ReadValue<float>() > 0.5f; // ゲームパッドで走り判定
         bool isGrounded = rb.IsTouchingLayers();
 
         if (isGrounded)
@@ -58,23 +71,21 @@ public class PlayerController : MonoBehaviour
     {
         if (!isSkillActive)
         {
-            float leftInput = inputSettings.IsLeftPressed() ? -1f : 0f;
-            float rightInput = inputSettings.IsRightPressed() ? 1f : 0f;
-            horizontalInput = leftInput + rightInput;
+            horizontalInput = controls.Player.Move.ReadValue<Vector2>().x;  // ゲームパッドで移動
 
-            if (inputSettings.IsJumpTriggered())
+            if (controls.Player.Jump.triggered)  // ゲームパッドでジャンプ
             {
                 jumpInput = true;
             }
-            jumpHeld = inputSettings.IsJumpPressed();
+            jumpHeld = controls.Player.Jump.ReadValue<float>() > 0.5f;  // ジャンプボタン保持
 
             Vector2 currentVelocity = movement.GetCurrentVelocity();
             bool isStationary = Mathf.Abs(currentVelocity.x) < 0.1f && Mathf.Abs(currentVelocity.y) < 0.1f;
 
-            if (inputSettings.IsSkillPressed() && isStationary)
+            if (controls.Player.UseLight.ReadValue<float>() > 0.5f && isStationary)  // ゲームパッドで灯りを使用
             {
                 isSkillActive = true;
-                stateManager.SetSkillState();  // �X�L����ԂɑJ��
+                stateManager.SetSkillState();
                 if (light != null)
                 {
                     light.SetLightUpStartTime();
@@ -88,10 +99,10 @@ public class PlayerController : MonoBehaviour
             jumpHeld = false;
         }
 
-        if (inputSettings.IsSkillReleased() && isSkillActive)
+        if (controls.Player.UseLight.ReadValue<float>() <= 0.5f && isSkillActive)  // ゲームパッドでスキル解除
         {
             isSkillActive = false;
-            stateManager.ClearSkillState();  // �X�L����Ԃ�����
+            stateManager.ClearSkillState();
             if (light != null)
             {
                 light.SetLightUpEndTime();
