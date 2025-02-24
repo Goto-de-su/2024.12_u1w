@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 245251129}
   - component: {fileID: 245251128}
   - component: {fileID: 245251127}
+  - component: {fileID: 245251130}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -239,6 +240,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245251125}
   m_CullTransparentMesh: 1
+--- !u!114 &245251130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245251125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93643c14898ec244bab05b254623f9cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 1, g: 1, b: 0.6, a: 1}
 --- !u!1 &582786214
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,6 +265,7 @@ GameObject:
   - component: {fileID: 582786218}
   - component: {fileID: 582786217}
   - component: {fileID: 582786216}
+  - component: {fileID: 582786219}
   m_Layer: 5
   m_Name: SettingButton
   m_TagString: Untagged
@@ -359,6 +374,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 582786214}
   m_CullTransparentMesh: 1
+--- !u!114 &582786219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582786214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93643c14898ec244bab05b254623f9cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 1, g: 1, b: 0.6, a: 1}
 --- !u!1 &676571092
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,6 +399,7 @@ GameObject:
   - component: {fileID: 676571096}
   - component: {fileID: 676571095}
   - component: {fileID: 676571094}
+  - component: {fileID: 676571097}
   m_Layer: 5
   m_Name: CreditButton
   m_TagString: Untagged
@@ -479,6 +508,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 676571092}
   m_CullTransparentMesh: 1
+--- !u!114 &676571097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676571092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93643c14898ec244bab05b254623f9cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 1, g: 1, b: 0.6, a: 1}
 --- !u!1 &769648611
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,17 +630,17 @@ MonoBehaviour:
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 0615a60e9c2cee9468f740be588e760f, type: 3}
+  m_PointAction: {fileID: -5712811611054577613, guid: 0615a60e9c2cee9468f740be588e760f, type: 3}
+  m_MoveAction: {fileID: 5547151301096832958, guid: 0615a60e9c2cee9468f740be588e760f, type: 3}
+  m_SubmitAction: {fileID: 1243405696942643708, guid: 0615a60e9c2cee9468f740be588e760f, type: 3}
+  m_CancelAction: {fileID: 3824165364905862158, guid: 0615a60e9c2cee9468f740be588e760f, type: 3}
+  m_LeftClickAction: {fileID: -8641564167811856035, guid: 0615a60e9c2cee9468f740be588e760f, type: 3}
+  m_MiddleClickAction: {fileID: 0}
+  m_RightClickAction: {fileID: 0}
+  m_ScrollWheelAction: {fileID: 0}
+  m_TrackedDevicePositionAction: {fileID: 0}
+  m_TrackedDeviceOrientationAction: {fileID: 0}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
@@ -972,6 +1014,7 @@ GameObject:
   - component: {fileID: 1773755096}
   - component: {fileID: 1773755095}
   - component: {fileID: 1773755094}
+  - component: {fileID: 1773755098}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1067,6 +1110,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1773755098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773755093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecbce10be863ea74da2d11f1cb5ac508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startButton: {fileID: 1823376685}
 --- !u!1 &1823376685
 GameObject:
   m_ObjectHideFlags: 0
@@ -1079,6 +1135,7 @@ GameObject:
   - component: {fileID: 1823376689}
   - component: {fileID: 1823376688}
   - component: {fileID: 1823376687}
+  - component: {fileID: 1823376690}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -1187,6 +1244,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823376685}
   m_CullTransparentMesh: 1
+--- !u!114 &1823376690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823376685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93643c14898ec244bab05b254623f9cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 1, g: 1, b: 0.6, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

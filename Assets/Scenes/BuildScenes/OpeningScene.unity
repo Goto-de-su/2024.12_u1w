@@ -630,6 +630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSceneName: GameScene
+  inputActions: {fileID: -944628639613478452, guid: 0615a60e9c2cee9468f740be588e760f, type: 3}
 --- !u!4 &1718977980
 Transform:
   m_ObjectHideFlags: 0
