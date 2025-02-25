@@ -11,16 +11,25 @@ public class PlayerController : MonoBehaviour
     private PlayerControls controls;  // PlayerControlsインスタンス
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
+    private Animator animator; // アニメーター追加
 
     private float horizontalInput;
     private bool jumpInput;
     private bool jumpHeld;
     private bool isSkillActive;
+    private bool isDead = false; // 死亡フラグ
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();  // Animator取得
+
+        // Animatorが取得できなかった場合に警告を表示
+        if (animator == null)
+        {
+            Debug.LogWarning("Animator is not assigned on the Player object.");
+        }
 
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
@@ -40,12 +49,17 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        HandleInput();
-        UpdateSprite();
+        if (!isDead) // 死亡時は入力を受け付けない
+        {
+            HandleInput();
+            UpdateSprite();
+        }
     }
 
     private void FixedUpdate()
     {
+        if (isDead) return; // 死亡時は動かない
+
         bool isRunning = controls.Player.Run.ReadValue<float>() > 0.5f; // ゲームパッドで走り判定
         bool isGrounded = rb.IsTouchingLayers();
 
@@ -110,6 +124,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // ✅ 敵かトラップに触れたらゲームオーバー処理を実行
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy") || collision.CompareTag("Dead"))
+        {
+            Die();
+        }
+    }
+
     private void UpdateSprite()
     {
         if (rb.IsTouchingLayers())
@@ -120,5 +143,33 @@ public class PlayerController : MonoBehaviour
                 spriteRenderer.flipX = velocity.x < 0;
             }
         }
+    }
+
+    private void Die()
+    {
+        isDead = true; // 死亡フラグを立てる
+
+        // 物理挙動を止める
+        rb.linearVelocity = Vector2.zero;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+
+        // 死亡アニメーションを再生
+        animator.Play("Player_dying");
+
+        // 3秒後に「死体のアニメーション」に切り替え
+        Invoke("SetDeadAnimation", 1.0f);
+
+        // 4秒後にリトライボタンを表示
+        Invoke("ShowRetryButton", 3.0f);
+    }
+
+    private void SetDeadAnimation()
+    {
+        animator.Play("Player_dead"); // 死亡ポーズ
+    }
+
+    private void ShowRetryButton()
+    {
+        GameOverUI.instance.ShowRetryButton();
     }
 }

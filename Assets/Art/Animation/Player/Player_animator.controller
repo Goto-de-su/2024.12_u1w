@@ -81,7 +81,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isDead
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4313091897848361419}
   m_Solo: 0
@@ -320,7 +323,13 @@ AnimatorController:
   m_PrefabAsset: {fileID: 0}
   m_Name: Player_animator
   serializedVersion: 5
-  m_AnimatorParameters: []
+  m_AnimatorParameters:
+  - m_Name: isDead
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -407,7 +416,7 @@ AnimatorStateMachine:
     m_Position: {x: 440, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7909978126355429628}
-    m_Position: {x: 233.01453, y: -264.04788, z: 0}
+    m_Position: {x: 230, y: -280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2283713431752716618}
     m_Position: {x: 268.01453, y: -199.04788, z: 0}
@@ -546,7 +555,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: isDead
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7909978126355429628}
   m_Solo: 0
@@ -556,7 +568,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.80263156
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
