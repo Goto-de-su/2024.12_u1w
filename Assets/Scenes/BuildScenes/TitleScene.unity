@@ -704,7 +704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e866023a58da2b4394407fecccf1988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmInTitle: {fileID: 8300000, guid: 26af55b40a89f3b4ea3b482c8fcb072f, type: 3}
+  bgmInTitle: {fileID: 8300000, guid: e781706fa451f324d9e461a8402403ee, type: 3}
   bgmInGame: {fileID: 8300000, guid: e781706fa451f324d9e461a8402403ee, type: 3}
   bgmInEndRoll: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
   meGameClear: {fileID: 8300000, guid: 9537b20850858564e92f4da339ef2eb8, type: 3}
@@ -721,7 +721,7 @@ MonoBehaviour:
   seTrap: {fileID: 8300000, guid: df2cc90ee32c1fc43bd4aa3faedb0b72, type: 3}
   seLight: {fileID: 8300000, guid: 59da26ced2371dc4cbd12b8942e5809d, type: 3}
   bgmVolume: 1
-  seVolume: 1
+  seVolume: 0.5
 --- !u!4 &902062504
 Transform:
   m_ObjectHideFlags: 0
