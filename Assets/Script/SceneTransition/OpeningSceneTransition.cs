@@ -1,25 +1,45 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class SceneTransition : MonoBehaviour
 {
-    // 遷移先のシーン名
-    [SerializeField]
-    private string nextSceneName;
+    [SerializeField] private string nextSceneName;
+    [SerializeField] private InputActionAsset inputActions; // InputActions繧偵い繧ｿ繝�繝�
 
-    void Update()
+    private InputAction submitAction;
+    private InputAction clickAction;
+
+    private void Awake()
     {
-        // マウスの左クリックを検出
-        if (Input.GetMouseButtonDown(0))
-        {
-            LoadNextScene();
-        }
+        var uiMap = inputActions.FindActionMap("UI");
+        submitAction = uiMap.FindAction("Submit"); // "UI" 縺ｮ "Submit"
+        clickAction = uiMap.FindAction("Click");   // "UI" 縺ｮ "Click"
     }
 
-    // シーン遷移を行うメソッド
+    private void OnEnable()
+    {
+        submitAction.performed += OnActionPerformed;
+        clickAction.performed += OnActionPerformed;
+        submitAction.Enable();
+        clickAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        submitAction.performed -= OnActionPerformed;
+        clickAction.performed -= OnActionPerformed;
+        submitAction.Disable();
+        clickAction.Disable();
+    }
+
+    private void OnActionPerformed(InputAction.CallbackContext context)
+    {
+        LoadNextScene();
+    }
+
     public void LoadNextScene()
     {
-        // 指定したシーンに遷移
         SceneManager.LoadScene(nextSceneName);
     }
 }

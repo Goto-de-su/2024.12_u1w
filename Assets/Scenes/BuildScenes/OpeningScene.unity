@@ -630,6 +630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSceneName: GameScene
+  inputActions: {fileID: -944628639613478452, guid: 0615a60e9c2cee9468f740be588e760f, type: 3}
 --- !u!4 &1718977980
 Transform:
   m_ObjectHideFlags: 0
@@ -783,7 +784,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -672, y: -361}
+  m_AnchoredPosition: {x: -700, y: -350}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2108023128
@@ -808,8 +809,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u5973\u738B\u30A2\u30EA\u69D8\u306B\u732E\u4E0A\u3059\u308B\u98DF\u3079\u7269\u3092\u3055\u304C\u3057\u3066\u3044\u305F\u3089\u3001\u3053\u3093\u306A\u3068\u3053\u308D\u307E\u3067\u6765\u3061\u3083\u3063\u305F\u2026\u2026\r\n\u3053\u306E\u7A74\u306E\u4E2D\u306F\u6697\u304F\u3066\u3053\u308F\u3044\u3051\u3069\u3001\u5965\u304B\u3089\u98DF\u3079\u7269\u306E\u5302\u3044\u304C\u3059\u308B\u2026\u2026\r\n\u2026\u2026\u3061\u3087\u3063\u3068\u898B\u3066\u3044\u304F\u3060\u3051\u306A\u3089\u5927\u4E08\u592B\u304B\u306A\uFF1F"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4a1096ad02f934649be71e3306f08912, type: 2}
-  m_sharedMaterial: {fileID: -6863973604125777949, guid: 4a1096ad02f934649be71e3306f08912, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: cc135b0db0977564ca5364c8022202ca, type: 2}
+  m_sharedMaterial: {fileID: -6863973604125777949, guid: cc135b0db0977564ca5364c8022202ca, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -833,8 +834,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

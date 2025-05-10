@@ -267,6 +267,9 @@ public class EnemyController : MonoBehaviour
         // 死亡処理
         isDead = true;
 
+        // タグを削除（"Enemy" から "Untagged" に変更）
+        gameObject.tag = "Untagged";
+
         // 移動を停止
         isActive = false;
 
